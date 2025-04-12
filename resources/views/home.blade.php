@@ -93,15 +93,7 @@
             <div class="flex justify-between items-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold text-[#3c2f27] font-[inika]">
                     Here’s what our Customers Says!
-                </h2>
-                <div class="flex space-x-4">
-                    <div
-                        class="swiper-button-prev w-10 h-10 rounded-full bg-[#d4b978] flex items-center justify-center text-[#5d4037] shadow-md">
-                    </div>
-                    <div
-                        class="swiper-button-next w-10 h-10 rounded-full bg-[#EFD9A9] flex items-center justify-center text-[#5d4037] shadow-md">
-                    </div>
-                </div>
+                </h2>   
             </div>
         </div>
     
