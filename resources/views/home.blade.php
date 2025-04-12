@@ -59,7 +59,7 @@
             </div>
             <h2 class="text-3xl font-bold text-[#3c2f27] font-[Inika]">Here's What our Top Sellers Are!</h2>
         </div>
-        <div class="bg-[#E5CBA6] min-h-screen py-12 px-6">
+        <div class="bg-[#E5CBA6] min-h-130 py-12 px-6">
             <div class="max-w-7xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
                     @foreach (range(1, 4) as $i)
