@@ -26,8 +26,8 @@
                                 {{ $item['text'] }}</p>
                         </div>
                         <div class="mt-6 flex flex-col items-center">
-                            <img src="{{ asset('images/user-' . $item['img'] . '.png') }}" alt="{{ $item['name'] }}"
-                                class="w-16 h-16 rounded-full border-2 border-white shadow mb-2">
+                            <img src="{{ asset('images/PP.png') }}" alt="{{ $item['name'] }}"
+                                class="w-16 h-16 rounded-full border-2 border-[#C8BEB0]      shadow mb-2">
                             <span class="font-bold font-[Instrument Sans] text-[#3c2f27]">{{ $item['name'] }}</span>
                         </div>
                     </div>
