@@ -1,5 +1,5 @@
 <body class="bg-white text-gray-600 work-sans leading-normal text-base tracking-normal">
-    <nav class="sticky top-0 bg-[#ffefd0] z-50">
+    <nav class="sticky top-0 bg-[#ffefd0] z-50 shadow-lg">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div class="relative flex h-23 items-center justify-between">
                 <!-- Mobile menu button -->
@@ -18,7 +18,7 @@
 
                 <!-- Logo on desktop -->
                 <div class="flex shrink-0 items-center  sm:block hidden">
-                    <img class="h-14 w-auto" src="images/LogoNomNom.png" alt="Logo">
+                    <img class="h-14 w-auto" src="images/Logo.jpg" alt="Logo">
                 </div>
                 <!-- Logo on mobile -->
 
