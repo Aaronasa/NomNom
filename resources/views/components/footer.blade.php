@@ -3,7 +3,7 @@
         <hr class="mb-6 border-[#E2CEB1]">
         <div class="text-center">
             <a href="#" class="flex items-center justify-center mb-5 text-2xl font-semibold text-gray-900">
-                <img src="./images/LogoNomNom.png" class="h-24 mr-3" alt="NomNom Logo" /> 
+                <img src="./images/LogoDEI.png" class="h-24 mr-3" alt="NomNom Logo" /> 
             </a>
             <span class="block text-sm text-center text-gray-500">© 2021-2022. Cook with Love</span>
             <ul class="flex justify-center mt-5 space-x-5">

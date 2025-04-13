@@ -18,7 +18,7 @@
 
                 <!-- Logo on desktop -->
                 <div class="flex shrink-0 items-center  sm:block hidden">
-                    <img class="h-14 w-auto" src="images/Logo.jpg" alt="Logo">
+                    <img class="h-14 w-auto" src="images/LogoDEI.png" alt="Logo">
                 </div>
                 <!-- Logo on mobile -->
 
@@ -26,15 +26,15 @@
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="hidden sm:block sm:ml-6">
                         <div class="flex space-x-4">
-                            <a href="/home"
+                            <a href="/"
                                 class="rounded-md px-8 py-2 text-m font-medium text-[#000000] hover:text-[#552e13] {{ request()->is('home') ? 'text-[#A07658]' : '' }}"
                                 aria-current="page">Home</a>
-                            <a href="/restaurants"
-                                class="rounded-md px-8 py-2 text-m font-medium text-[#000000] hover:text-[#552e13]{{ request()->is('restaurant') ? 'text-[#A07658]' : '' }}">Menu</a>
-                            <a href="/fusion"
-                                class="rounded-md px-8 py-2 text-m font-medium text-[#000000] hover:text-[#552e13] {{ request()->is('fusion') ? 'text-[#A07658]' : '' }}">Reviews</a>
-                            <a href="/orderstatus"
-                                class="rounded-md px-8 py-2 text-m font-medium text-[#000000] hover:text-[#552e13] {{ request()->is('orderstatus') ? 'text-[#A07658]' : '' }}">My Order
+                            <a href="/menu"
+                                class="rounded-md px-8 py-2 text-m font-medium text-[#000000] hover:text-[#552e13]{{ request()->is('menu') ? 'text-[#A07658]' : '' }}">Menu</a>
+                            <a href="/reviews"
+                                class="rounded-md px-8 py-2 text-m font-medium text-[#000000] hover:text-[#552e13] {{ request()->is('reviews') ? 'text-[#A07658]' : '' }}">Reviews</a>
+                            <a href="/myorder"
+                                class="rounded-md px-8 py-2 text-m font-medium text-[#000000] hover:text-[#552e13] {{ request()->is('myorder') ? 'text-[#A07658]' : '' }}">My Order
                                 </a>
                         </div>
                     </div>
@@ -69,14 +69,14 @@
         <!-- Mobile Menu, Hidden by default -->
         <div class="sm:hidden" id="mobile-menu" class="hidden">
             <div class="space-y-1 px-2 pt-2 pb-3">
-                <a href="/home"
+                <a href="/"
                     class="block rounded-md px-3 py-2 text-base font-medium text-white hover:text-[#A07658] {{ request()->is('home') ? 'text-[#A07658]' : '' }}">Home</a>
-                <a href="/restaurants"
-                    class="block rounded-md px-3 py-2 text-base font-medium text-white hover:text-[#A07658] {{ request()->is('restaurant') ? 'text-[#A07658]' : '' }}">Restaurant</a>
-                <a href="/fusion"
-                    class="block rounded-md px-3 py-2 text-base font-medium text-white hover:text-[#A07658] {{ request()->is('fusion') ? 'text-[#A07658]' : '' }}">Fusions</a>
-                <a href="/orderstatus"
-                    class="block rounded-md px-3 py-2 text-base font-medium text-white hover:text-[#A07658] {{ request()->is('orderstatus') ? 'text-[#A07658]' : '' }}">Order
+                <a href="/menu"
+                    class="block rounded-md px-3 py-2 text-base font-medium text-white hover:text-[#A07658] {{ request()->is('menu') ? 'text-[#A07658]' : '' }}">Restaurant</a>
+                <a href="/reviews"
+                    class="block rounded-md px-3 py-2 text-base font-medium text-white hover:text-[#A07658] {{ request()->is('reviews') ? 'text-[#A07658]' : '' }}">Fusions</a>
+                <a href="/myorder"
+                    class="block rounded-md px-3 py-2 text-base font-medium text-white hover:text-[#A07658] {{ request()->is('myorder') ? 'text-[#A07658]' : '' }}">Order
                     Status</a>
             </div>
         </div>

@@ -4,6 +4,24 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home', [
-        "pagetitle" => "KATERINGKU"
+        "pagetitle" => "NomNom"
     ]);
 });
+Route::get('/menu', function () {
+    return view('menu', [
+        "pagetitle" => "NomNom"
+    ]);
+});
+
+Route::get('/reviews', function () {
+    return view('reviews', [
+        "pagetitle" => "NomNom"
+    ]);
+});
+Route::get('/myorder', function () {
+    return view('myorder', [
+        "pagetitle" => "NomNom"
+    ]);
+});
+
+
