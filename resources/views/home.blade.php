@@ -19,7 +19,7 @@
                         </p>
                     </div>
                     <button
-                        class="bg-[#EFD9A9] shadow-[0_2px_0px_rgba(0,0,0,0.2)] w-[350px] h-[60px] text-xl rounded-xl mt-10 font-bold text-[#4A2200] hover:scale-105 transition font-[Instrument Sans] self-center md:self-start">
+                        class="bg-[#EFD9A9] shadow-[0_2px_0px_rgba(0,0,0,0.2)] w-[350px] h-[60px] text-xl rounded-xl mt-10 md:mt-25 md:ml-20 font-bold text-[#4A2200] hover:scale-105 transition font-[Instrument Sans] self-center md:self-start">
                         Start your Culinary Discovery!
                     </button>
                 </div>
