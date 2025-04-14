@@ -23,5 +23,12 @@ Route::get('/myorder', function () {
         "pagetitle" => "NomNom"
     ]);
 });
+Route::get('/cart', function () {
+    return view('cart', [
+        "pagetitle" => "NomNom"
+    ]);
+});
+
+
 
 
