@@ -45,7 +45,6 @@
         const scrollLeft = wrapper.scrollLeft;
         const maxScrollLeft = wrapper.scrollWidth - wrapper.clientWidth;
 
-        // Update left button
         if (scrollLeft > 10) {
             btnLeft.classList.add('bg-[#BC7D36]');
             btnLeft.classList.remove('bg-[#F3E8CC]');
