@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'Instrument Sans';
+    src: url('/fonts/instrument-sans.woff2') format('woff2'), /* For .woff2 */
+         url('/fonts/instrument-sans.woff') format('woff'),   /* For .woff */
+         url('/fonts/instrument-sans.ttf') format('truetype'); /* For .ttf */
+    font-weight: normal;
+    font-style: normal;
+}
