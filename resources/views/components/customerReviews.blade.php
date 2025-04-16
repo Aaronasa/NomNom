@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-10 sm:mb-12">
             <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-[#3c2f27] font-[inika] text-center sm:text-left">
-                Here’s what our Customers Say!
+                What People Are Saying About NomNom
             </h2>
         </div>
     </div>
