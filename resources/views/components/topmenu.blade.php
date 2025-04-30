@@ -15,9 +15,9 @@
         </button>
     </div>
 
-    <h2 class="text-3xl font-bold text-[#3c2f27] font-[Inika]">Here's What our Top Sellers Are!</h2>
+    <h2 class="text-3xl font-bold text-[#3c2f27] font-[Inika]">Try Our Best-Selling Menu</h2>
 </div>
-<div class="bg-[#E5CBA6] min-h-130 py-12 px-6">
+<div class="bg-[#E5CBA6] min-h-130 py-12 px-6 font-[Instrument Sans]">
     <div class="max-w-7xl mx-auto">
         <div id="topSellersWrapper" class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar">
             @foreach (range(1, 10) as $i)
@@ -31,12 +31,12 @@
                         <p class="text-[#5d4037] text-sm">Lorem ipsum dolor sit amet.</p>
                     </div>
                     <div class="flex justify-between items-center mt-3">
-                        <span class="text-[#3F2812] font-bold text-sm font-[Instrument Sans]">  
+                        <span class="text-[#3F2812] font-bold text-sm">  
                             Rp. {{ number_format([132000, 69000, 49000, 5000, 49000, 5000, 49000, 5000, 49000, 5000][$i - 1], 0, ',', '.') }},00
                         </span>
                         <button
                             class="bg-[#EFD9A9] text-[#5d4037] px-3 py-1 rounded-full text-sm font-semibold hover:bg-[#d4b978] transition">
-                            Order Now!
+                            Order Now
                         </button>
                     </div>
                 </div>
