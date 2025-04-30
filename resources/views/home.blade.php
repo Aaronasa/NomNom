@@ -5,7 +5,7 @@
             <div class="absolute top-20 sm:top-0 left-0 w-full mt-8 h-[500px] sm:h-[600px]">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 600" preserveAspectRatio="none"
                     class="w-full h-full drop-shadow-[0_-6px_4px_rgba(0,0,0,0.1)]">
-                    <path fill="#F3E8CC" fill-opacity="1"
+                    <path fill="#F3E8CC"     fill-opacity="1"
                         d="M0,300L48,285.5C96,271,192,242,288,233.3C384,224,480,240,576,265.7C672,291,768,326,864,353.2C960,380,1056,392,1152,368.2C1248,344,1344,271,1392,248.2L1440,225L1440,600L1392,600C1344,600,1248,600,1152,600C1056,600,960,600,864,600C768,600,672,600,576,600C480,600,384,600,288,600C192,600,96,600,48,600L0,600Z">
                     </path>
                 </svg>
