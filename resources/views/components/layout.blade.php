@@ -7,9 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inika:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
 
-
-    <link rel="stylesheet" href="{{ asset('mydesign/mystyle.css') }}">
 </head>
 
 <body>
@@ -46,7 +45,6 @@
         const scrollLeft = wrapper.scrollLeft;
         const maxScrollLeft = wrapper.scrollWidth - wrapper.clientWidth;
 
-        // Update left button
         if (scrollLeft > 10) {
             btnLeft.classList.add('bg-[#BC7D36]');
             btnLeft.classList.remove('bg-[#F3E8CC]');
@@ -86,6 +84,9 @@
 
 
 <style>
+    
+
+    
     .no-scrollbar::-webkit-scrollbar {
         display: none;
     }
