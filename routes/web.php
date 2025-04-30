@@ -29,6 +29,21 @@ Route::get('/cart', function () {
     ]);
 });
 
+//admin
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin');
+    Route::get('/', [AdminController::class, 'getAllUsers'])->name('admin.users');
+});
+
+// User
+// Rute yang memerlukan login (middleware auth)
+Route::middleware(['auth', 'role:user'])->group(function () {
+    // Logout
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+});
+
 
 
 
