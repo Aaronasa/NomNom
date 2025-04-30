@@ -6,100 +6,116 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function showRegisterForm()
-    {
-        return view('auth.register');
-    }
-
-    public function register(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|unique:users,username',
-            'address' => 'nullable|string',
-            'number' => 'nullable|string',
-            'password' => 'required|min:6|confirmed',
-        ]);
-
-        User::create([
-            'username' => $request->username,
-            'address' => $request->address,
-            'number' => $request->number,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return redirect()->route('login.form')->with('success', 'Registration successful. Please login.');
-    }
-
     public function showLoginForm()
     {
-        return view('login'); // Mengarah ke view login
+        return view('welcome');
     }
 
     public function login(Request $request)
     {
         $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
 
-       
-        if ($request->username === 'admin' && $request->password === 'admin') {
-            Auth::loginUsingId(1); 
-            return redirect()->route('admin.dashboard');
-        }
+        $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            return redirect()->route('home');
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            $user = Auth::user();
+
+            if ($user->role_id == 1) {
+                return redirect()->intended('/admin');
+            } elseif ($user->role_id == 2) {
+                return redirect()->intended('/home');
+            } else {
+                Auth::logout();
+                return back()->withErrors(['email' => 'Unauthorized access.']);
+            }
         }
 
         return back()->withErrors([
-            'username' => 'Username atau password salah.',
+            'email' => 'The provided credentials do not match our records.',
         ]);
     }
 
-
-    // Logout
-    public function logout(Request $request)
+    public function logout()
     {
         Auth::logout();
-        return redirect()->route('login.form'); // Redirect ke halaman login setelah logout
-    }
-    public function destroy(User $user)
-    {
-        $user->delete();
-        return redirect()->route('login.form')->with('success', 'Account deleted successfully!');
-    } // Menampilkan form untuk mengedit profile
-
-
-    public function showEditForm()
-    {
-        $user = Auth::user();  // Ambil data user yang sedang login
-        return view('editProfile', compact('user'));  // Kirim data user ke view
+        return redirect('/');
     }
 
-    public function updateProfile(Request $request)
+    public function register(Request $request)
     {
-        $user = Auth::user();  // Mendapatkan user yang sedang login
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string|max:255|unique:users,username',
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8',
+            'phone' => 'required|string|max:15',
+            'address' => 'required|string|max:255',
+        ]);
 
-        // Pastikan $user adalah instance dari model User
-        if ($user instanceof User) {
-            // Validasi dan pembaruan
-            $user->update($request->except('password')); // Update semua kolom kecuali password
-
-            // Jika password diubah, lakukan perubahan password
-            if ($request->filled('password')) {
-                $user->password = Hash::make($request->password); // Hash password baru
-                $user->save(); // Simpan perubahan password
-            }
-
-            return redirect()->route('home')->with('success', 'Profile updated successfully!');
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Jika user bukan instance dari User, beri respons error
-        return back()->withErrors(['error' => 'User not found or unauthorized']);
+        User::create([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'role_id' => 2,
+        ]);
+
+        return redirect('/')->with('success', 'Registration successful! Please login.');
+    }
+    public function showUpdateForm()
+    {
+        $user = Auth::user();
+        return view('ProfileDetail')->with('user', $user);
+    }
+
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'phone' => 'nullable|string|max:15',
+            'address' => 'nullable|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $user->update([
+            'username' => $request->username,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+        ]);
+
+        return redirect('/home')->with('success', 'Profile updated successfully!');
+    }
+
+    public function deleteAccount(Request $request)
+    {
+        $user = Auth::user();
+        // Hapus akun pengguna
+        $user->delete();
+
+        $user->orders()->delete();
+
+        // Logout dan redirect ke halaman utama
+        Auth::logout();
+        return redirect('/')->with('success', 'Your account has been deleted successfully.');
     }
 }
