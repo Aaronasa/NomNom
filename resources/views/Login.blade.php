@@ -1,50 +1,59 @@
 <x-layout>
-    {{-- <x-slot:layoutTitle>{{ $pagetitle }}</x-slot:layoutTitle> --}}
-    <section class="bg-white">
-        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-                <img class="mx-auto h-24 w-auto" src="images/logos.png" alt="Logo">
-            </div>
-            <div class="w-full bg-white rounded-lg shadow border border-[#E2CEB1] md:mt-0 sm:max-w-md xl:p-0">
-                <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                    <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-                        Login to Your Account
-                    </h1>
-                    <form class="space-y-4 md:space-y-6" method="POST" action="{{ route('login') }}">
-                        @csrf
-                        <div>
-                            <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
-                            <input type="text" name="username" id="username" placeholder="Enter your username"
-                                class="bg-gray-50 border border-[#E2CEB1] text-gray-900 text-sm rounded-lg focus:ring-[#E2CEB1] focus:border-[#E2CEB1] block w-full p-2.5"
-                                value="{{ old('username') }}" required>
-                        </div>
-                        <div>
-                            <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
-                            <input type="password" name="password" id="password" placeholder="Enter your password"
-                                class="bg-gray-50 border border-[#E2CEB1] text-gray-900 text-sm rounded-lg focus:ring-[#E2CEB1] focus:border-[#E2CEB1] block w-full p-2.5"
-                                required>
-                        </div>
-                        @if ($errors->any())
-                            <div class="bg-red-100 text-red-800 border border-red-400 p-2 rounded-md mb-4">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
+    <div class="w-full min-h-screen bg-gray-900">
+        <div class="container mx-auto px-4 h-screen">
+            <div class="flex content-center items-center justify-center h-screen">
+                <div class="w-full lg:w-4/12 px-4 pt-5">
+                    {{-- div buat 1 card --}}
+                    <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0">
+                        <div class="rounded-t mb-0 px-6 py-6">
+                            <div class="text-center mb-3">
+                                <h6 class="text-gray-600 text-sm font-bold">Welcome Back</h6>
                             </div>
-                        @endif
-                        <button type="submit"
-                            class="w-full text-white bg-[#E2CEB1] hover:bg-[#A07658] focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                            Log In
-                        </button>
-                        <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                            Don't have an account? <a href="/signup"
-                                class="font-medium text-[#E2CEB1] hover:underline">Sign Up here</a>
-                        </p>
-                    </form>
-                    
+                            <hr class="mt-6 border-b-1 border-gray-400">
+                        </div>
+                        <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+                            <form method="POST" action="{{ route('login') }}">
+                                @csrf
+                                <!-- Email -->
+                                <div class="relative w-full mb-3">
+                                    <label class="block uppercase text-gray-700 text-xs font-bold mb-2" for="email">
+                                        Email
+                                    </label>
+                                    <input type="email" name="email" id="email" placeholder="Your Email"
+                                        class="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:shadow-outline w-full" 
+                                        {{-- value="{{ old('email') }}" --}}
+                                        >
+                                </div>
+
+                                <!-- Password -->
+                                <div class="relative w-full mb-3">
+                                    <label class="block uppercase text-gray-700 text-xs font-bold mb-2" for="password">
+                                        Password
+                                    </label>
+                                    <input type="password" name="password" id="password" placeholder="Your Password"
+                                        class="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:shadow-outline w-full">
+                                </div>
+
+                                <div class="text-center mt-6">
+                                    <button type="submit"
+                                        class="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
+                                        style="transition: all 0.15s ease 0s;">
+                                        Sign In
+                                    </button>
+                                </div>
+                            </form>
+
+                            <div class="flex flex-wrap mt-2">
+                                <div class="w-1/2">
+                                    <a href="/register" class="text-gray-500">
+                                        <small>Don't have an account? Register</small>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 </x-layout>

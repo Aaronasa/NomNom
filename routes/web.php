@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,20 +25,29 @@ Route::get('/myorder', function () {
     ]);
 });
 
+Route::get('/signin', [AuthController::class, 'showLoginForm'])->name('login');
+Route::get('/register', function () {
+    return view('register'); // atau pakai controller jika kamu punya
+})->name('register-form');
+
+// Proses login dan register
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+
 //admin
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-    Route::get('/', [AdminController::class, 'index'])->name('admin');
-    Route::get('/', [AdminController::class, 'getAllUsers'])->name('admin.users');
-});
+// Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+//     Route::get('/', [AdminController::class, 'index'])->name('admin');
+//     Route::get('/', [AdminController::class, 'getAllUsers'])->name('admin.users');
+// });
 
-// User
-// Rute yang memerlukan login (middleware auth)
-Route::middleware(['auth', 'role:user'])->group(function () {
-    // Logout
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+// // User
+// // Rute yang memerlukan login (middleware auth)
+// Route::middleware(['auth', 'role:user'])->group(function () {
+//     // Logout
+//     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+//     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-});
+// });
 
 
 

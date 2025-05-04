@@ -95,27 +95,28 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-
-        $user->update([
-            'username' => $request->username,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-        ]);
-
-        return redirect('/home')->with('success', 'Profile updated successfully!');
-    }
-
-    public function deleteAccount(Request $request)
-    {
-        $user = Auth::user();
-        // Hapus akun pengguna
-        $user->delete();
-
-        $user->orders()->delete();
-
-        // Logout dan redirect ke halaman utama
-        Auth::logout();
-        return redirect('/')->with('success', 'Your account has been deleted successfully.');
     }
 }
+//         $user->update([
+//             'username' => $request->username,
+//             'email' => $request->email,
+//             'phone' => $request->phone,
+//             'address' => $request->address,
+//         ]);
+
+//         return redirect('/home')->with('success', 'Profile updated successfully!');
+//     }
+
+//     public function deleteAccount(Request $request)
+//     {
+//         $user = Auth::user();
+//         // Hapus akun pengguna
+//         $user->delete();
+
+//         $user->orders()->delete();
+
+//         // Logout dan redirect ke halaman utama
+//         Auth::logout();
+//         return redirect('/')->with('success', 'Your account has been deleted successfully.');
+//     }
+// }

@@ -1,85 +1,107 @@
 <x-layout>
-    {{-- <x-slot:layoutTitle>{{ $pagetitle }}</x-slot:layoutTitle> --}}
-    <section class="bg-white">
-        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-                <img class="mx-auto h-24 w-auto" src="images/logos.png" alt="Logo">
-            </div>
-            <!-- Tambahkan border dengan warna #E2CEB1 di sini -->
-            <div class="w-full bg-white rounded-lg shadow border border-[#E2CEB1] md:mt-0 sm:max-w-md xl:p-0">
-                <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                    <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-                        Create an account
-                    </h1>
-                    <form class="space-y-4 md:space-y-6" action="{{ route('register') }}" method="POST" id="register-form">
-                        @csrf
-                        <div>
-                            <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
-                            <input type="text" name="username" id="username" value="{{ old('username') }}"
-                                placeholder="username"
-                                class="bg-gray-50 border border-[#E2CEB1] text-gray-900 text-sm rounded-lg focus:ring-[#E2CEB1] focus:border-[#E2CEB1] block w-full p-2.5"
-                                required="">
-                            @error('username')
-                                <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                            @enderror
+    <div class="w-full min-h-screen bg-gray-900">
+        <div class="container mx-auto px-4 h-screen">
+            <div class="flex content-center items-center justify-center h-screen">
+                <div class="w-full lg:w-4/12 px-4 pt-5">
+                    {{-- Card untuk registrasi --}}
+                    <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0">
+                        <div class="rounded-t mb-0 px-6 py-6">
+                            <div class="text-center mb-3">
+                                <h6 class="text-gray-600 text-sm font-bold">Create an Account</h6>
+                            </div>
+                            <hr class="mt-6 border-b-1 border-gray-400">
                         </div>
-                    
-                        <div>
-                            <label for="address" class="block mb-2 text-sm font-medium text-gray-900">Address</label>
-                            <input type="text" name="address" id="address" value="{{ old('address') }}"
-                                placeholder="123 Main St, Springfield"
-                                class="bg-gray-50 border border-[#E2CEB1] text-gray-900 text-sm rounded-lg focus:ring-[#E2CEB1] focus:border-[#E2CEB1] block w-full p-2.5"
-                                required="">
-                            @error('address')
-                                <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                            @enderror
+
+                        <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+                            <form action="{{ route('register') }}" method="POST">
+                                @csrf
+
+                                <!-- Username -->
+                                <div class="relative w-full mb-3">
+                                    <label class="block uppercase text-gray-700 text-xs font-bold mb-2" for="username">
+                                        Username
+                                    </label>
+                                    <input type="text" name="username" id="username" 
+                                           placeholder="Your Username" value="{{ old('username') }}"
+                                           class="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:shadow-outline w-full">
+                                    @error('username')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <!-- Email -->
+                                <div class="relative w-full mb-3">
+                                    <label class="block uppercase text-gray-700 text-xs font-bold mb-2" for="email">
+                                        Email
+                                    </label>
+                                    <input type="email" name="email" id="email" 
+                                           placeholder="Your Email" value="{{ old('email') }}"
+                                           class="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:shadow-outline w-full">
+                                    @error('email')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <!-- Password -->
+                                <div class="relative w-full mb-3">
+                                    <label class="block uppercase text-gray-700 text-xs font-bold mb-2" for="password">
+                                        Password
+                                    </label>
+                                    <input type="password" name="password" id="password" 
+                                           placeholder="Your Password"
+                                           class="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:shadow-outline w-full">
+                                    @error('password')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <!-- Phone Number -->
+                                <div class="relative w-full mb-3">
+                                    <label class="block uppercase text-gray-700 text-xs font-bold mb-2" for="phone">
+                                        Phone Number
+                                    </label>
+                                    <input type="tel" name="phone" id="phone" 
+                                           placeholder="Your Phone Number" value="{{ old('phone') }}"
+                                           class="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:shadow-outline w-full">
+                                    @error('phone')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <!-- Address -->
+                                <div class="relative w-full mb-3">
+                                    <label for="address" class="block uppercase text-gray-700 text-xs font-bold mb-2">
+                                        Address
+                                    </label>
+                                    <textarea name="address" id="address" 
+                                              placeholder="Your Address" 
+                                              class="resize-none mt-1 block px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:shadow-outline w-full">{{ old('address') }}</textarea>
+                                    @error('address')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="text-center mt-6">
+                                    <button type="submit" 
+                                            class="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full" 
+                                            style="transition: all 0.15s ease 0s;">
+                                        Register
+                                    </button>
+                                </div>
+                            </form>
+
+                            <div class="flex flex-wrap mt-2">
+                                <div class="w-1/2">
+                                    <a href="{{ route('welcome') }}" class="text-gray-500">
+                                        <small>Already have an account? Sign In</small>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    
-                        <div>
-                            <label for="number" class="block mb-2 text-sm font-medium text-gray-900">Phone Number</label>
-                            <input type="text" name="number" id="number" value="{{ old('number') }}"
-                                placeholder="1234567890"
-                                class="bg-gray-50 border border-[#E2CEB1] text-gray-900 text-sm rounded-lg focus:ring-[#E2CEB1] focus:border-[#E2CEB1] block w-full p-2.5"
-                                required="">
-                            @error('number')
-                                <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    
-                        <div>
-                            <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
-                            <input type="password" name="password" id="password" placeholder="••••••••"
-                                class="bg-gray-50 border border-[#E2CEB1] text-gray-900 text-sm rounded-lg focus:ring-[#E2CEB1] focus:border-[#E2CEB1] block w-full p-2.5"
-                                required="">
-                            @error('password')
-                                <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    
-                        <div>
-                            <label for="password_confirmation" class="block mb-2 text-sm font-medium text-gray-900">Confirm Password</label>
-                            <input type="password" name="password_confirmation" id="password_confirmation" placeholder="••••••••"
-                                class="bg-gray-50 border border-[#E2CEB1] text-gray-900 text-sm rounded-lg focus:ring-[#E2CEB1] focus:border-[#E2CEB1] block w-full p-2.5"
-                                required="">
-                            @error('password_confirmation')
-                                <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    
-                        <button type="submit"
-                            class="w-full text-white bg-[#E2CEB1] hover:bg-[#A07658] focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                            Create an account
-                        </button>
-                    
-                        <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                            Already have an account? <a href="/signin"
-                                class="font-medium text-[#E2CEB1] hover:underline ">Login here</a>
-                        </p>
-                    </form>
-                    
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
-    <x-footer />
+    </div>
 </x-layout>
