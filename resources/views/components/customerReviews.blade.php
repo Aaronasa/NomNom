@@ -28,7 +28,7 @@
                             </p>
                         </div>
                         <div class="mt-6 flex flex-col items-center">
-                            <img src="{{ asset('images/PP.png') }}" alt="{{ $item['name'] }}"
+                            <img src="{{ asset('image/PP.png') }}" alt="{{ $item['name'] }}"
                                 class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 border-[#C8BEB0] shadow mb-2">
                             <span class="font-bold font-[Instrument Sans] text-[#3c2f27] text-sm sm:text-base">
                                 {{ $item['name'] }}

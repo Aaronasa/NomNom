@@ -22,7 +22,7 @@
         <div id="topSellersWrapper" class="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar">
             @foreach (range(1, 10) as $i)
             <div class="min-w-[235px] h-[410px] bg-[#FFF8E6] rounded-[30px] shadow-md hover:shadow-xl flex flex-col overflow-hidden">
-                <img src="{{ asset('images/HomeFood.png') }}" alt="Food Item"
+                <img src="{{ asset('image/HomeFood.png') }}" alt="Food Item"
                 class="w-full h-60 object-contain rounded-t-[30px]" />
             
                 <div class="flex flex-col justify-between flex-grow p-4">

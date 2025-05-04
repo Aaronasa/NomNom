@@ -33,9 +33,9 @@
 
                 </div>
                 <div class="relative md:w-1/2 flex justify-center items-center mt-10 md:mt-0">
-                    <img src="{{ asset('images/CircleHome.png') }}" alt="Background Circle"
+                    <img src="{{ asset('image/CircleHome.png') }}" alt="Background Circle"
                         class="w-[180px] h-[180px] md:w-[480px] md:h-[480px] rounded-full">
-                    <img src="{{ asset('images/HomeFood.png') }}" alt="Delicious Food"
+                    <img src="{{ asset('image/HomeFood.png') }}" alt="Delicious Food"
                         class="w-[160px] h-[160px] absolute md:w-[460px] md:h-[460px] rounded-full object-cover z-10 animate-spin"
                         style="animation-duration: 100s;">
                 </div>

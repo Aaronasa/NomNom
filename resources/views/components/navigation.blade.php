@@ -18,17 +18,17 @@
 
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center pl-14 sm:pl-0">
-                    <img class="h-12 sm:h-14 w-auto" src="images/LogoDEI.png" alt="Logo">
+                    <img class="h-12 sm:h-14 w-auto" src="image/LogoDEI.png" alt="Logo">
                 </div>
                 
 
                 <!-- Desktop Menu -->
                 <div class="hidden sm:flex sm:flex-1 items-center ml-10">
                     <div class="flex space-x-4">
-                        <a href="/" class="rounded-md px-4 py-2 text-base font-medium text-black hover:text-[#552e13]">Home</a>
-                        <a href="/menu" class="rounded-md px-4 py-2 text-base font-medium text-black hover:text-[#552e13]">Menu</a>
+                        <a href="/home" class="rounded-md px-4 py-2 text-base font-medium text-black hover:text-[#552e13]">Home</a>
+                        <a href="/order" class="rounded-md px-4 py-2 text-base font-medium text-black hover:text-[#552e13]">Menu</a>
                         <a href="/reviews" class="rounded-md px-4 py-2 text-base font-medium text-black hover:text-[#552e13]">Reviews</a>
-                        <a href="/myorder" class="rounded-md px-4 py-2 text-base font-medium text-black hover:text-[#552e13]">My Order</a>
+                        <a href="/OrderDetail" class="rounded-md px-4 py-2 text-base font-medium text-black hover:text-[#552e13]">My Order</a>
                     </div>
                 </div>
 
@@ -53,10 +53,10 @@
         <!-- Mobile Menu -->
         <div class="sm:hidden hidden" id="mobile-menu">
             <div class="space-y-1 px-2 pt-2 pb-3 bg-[#ffefd0] text-black">
-                <a href="/" class="block rounded-md px-3 py-2 text-base font-medium hover:text-[#A07658]">Home</a>
-                <a href="/menu" class="block rounded-md px-3 py-2 text-base font-medium hover:text-[#A07658]">Menu</a>
+                <a href="/home" class="block rounded-md px-3 py-2 text-base font-medium hover:text-[#A07658]">Home</a>
+                <a href="/order" class="block rounded-md px-3 py-2 text-base font-medium hover:text-[#A07658]">Menu</a>
                 <a href="/reviews" class="block rounded-md px-3 py-2 text-base font-medium hover:text-[#A07658]">Reviews</a>
-                <a href="/myorder" class="block rounded-md px-3 py-2 text-base font-medium hover:text-[#A07658]">My Order</a>
+                <a href="/order/{order}/detail" class="block rounded-md px-3 py-2 text-base font-medium hover:text-[#A07658]">My Order</a>
             </div>
         </div>
     </nav>
