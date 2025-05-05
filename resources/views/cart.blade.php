@@ -27,7 +27,7 @@
             text-decoration: underline;
         }
         .cart-item {
-            background-color: white;
+            background-color: #FFF8E6;
             border-radius: 0.5rem;
             margin-bottom: 1.5rem;
             display: flex;
@@ -246,7 +246,7 @@
 
             @if (count($cart) > 0)
                 <div class="cart-header-row">
-                    <div class="cart-header-item">{{ $cart[0]['restaurantName'] ?? 'Burger Bangor' }}</div>
+                    <div class="cart-header-item">{{ $cart[0]['restaurantName'] ?? 'Your Order' }}</div>
                     <div class="cart-header-price">Price</div>
                     <div class="cart-header-quantity">Quantity</div>
                     <div class="cart-header-total">Total</div>

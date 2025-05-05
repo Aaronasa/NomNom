@@ -15,7 +15,7 @@
                 class="relative z-10 max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-start md:items-start text-center md:text-left">
                 <div class="md:w-1/2 text-center md:text-left flex flex-col justify-start items-center md:items-start">
                     <div>
-                        <h1 class="text-4xl md:text-6xl font-bold text-[#3F2812]">Freshly Made for Your Everyday Meal
+                        <h1 class="text-4xl md:text-6xl font-bold text-[#3F2812] ">Freshly Made for Your Everyday Meal
 
                         </h1>
                         <p class=" md:text-3x1 mt-5 font-bold text-[#824C0F]">
@@ -24,8 +24,8 @@
                         </p>
                     </div>
 
-                    <a href="/menu"
-                        class="bg-[#EFD9A9] shadow-[0_5px_0px_rgba(0,0,0,0.1)] w-[240px] h-[60px] text-xl rounded-xl mt-10 md:mt-30 md:ml-30 font-bold text-[#4A2200] hover:scale-105 transition font-[Instrument Sans] self-center md:self-start flex items-center justify-center">
+                    <a href="/order"
+                        class="bg-[#DCC193] hover:bg-[#A47148]  font-medium py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 w-[240px] h-[60px] text-xl  mt-10 md:mt-30 md:ml-30  text-[#4A2200] hover:scale-105  font-[Instrument Sans] self-center md:self-start flex items-center justify-center">
                         Explore Our Menu
                     </a>
 

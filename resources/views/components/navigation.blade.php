@@ -31,7 +31,7 @@
                             class="rounded-md px-4 py-2 text-base font-medium text-black hover:text-[#552e13]">Menu</a>
                         <a href="/reviews"
                             class="rounded-md px-4 py-2 text-base font-medium text-black hover:text-[#552e13]">Reviews</a>
-                        <a href="/OrderDetail"
+                        <a href="/history"
                             class="rounded-md px-4 py-2 text-base font-medium text-black hover:text-[#552e13]">My
                             Order</a>
                     </div>
@@ -47,11 +47,37 @@
                                 d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                     </button>
-                    <div class="text-base font-medium text-gray-800 ml-2">
-                        <span>Hello, </span> 
-                        <span class="text-[#A07658]">{{ Auth::user()->username }}</span>
+                    <!-- Dropdown Trigger -->
+                    <div class="relative ml-2">
+                        <button type="button" onclick="toggleDropdown()" id="profile-menu-button"
+                            class="text-base font-medium text-gray-800 hover:text-[#A07658] focus:outline-none">
+                            <span>Hello, </span>
+                            <span class="text-[#A07658]">{{ Auth::user()->username }}</span>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div id="profile-dropdown"
+                            class="hidden absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 z-50"
+                            role="menu" aria-orientation="vertical" aria-labelledby="profile-menu-button">
+                            <a href="/detail" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your
+                                Profile</a>
+
+                            <form action="{{ route('logout') }}" method="POST"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                @csrf
+                                <button type="submit" class="w-full text-left">Sign out</button>
+                            </form>
+
+                            <form action="{{ route('account.delete') }}" method="POST"
+                                class="block px-4 py-2 text-sm text-red-700 hover:bg-red-100">
+                                @csrf
+                                <button type="submit" class="w-full text-left">Delete Account</button>
+                            </form>
+                        </div>
                     </div>
+
                 </div>
+
             </div>
         </div>
 
@@ -62,7 +88,7 @@
                 <a href="/order" class="block rounded-md px-3 py-2 text-base font-medium hover:text-[#A07658]">Menu</a>
                 <a href="/reviews"
                     class="block rounded-md px-3 py-2 text-base font-medium hover:text-[#A07658]">Reviews</a>
-                <a href="/order/{order}/detail"
+                <a href="/history"
                     class="block rounded-md px-3 py-2 text-base font-medium hover:text-[#A07658]">My Order</a>
             </div>
         </div>
@@ -72,6 +98,20 @@
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
+        });
+
+        function toggleDropdown() {
+            const dropdown = document.getElementById("profile-dropdown");
+            dropdown.classList.toggle("hidden");
+        }
+
+        // Close the dropdown if user clicks outside
+        window.addEventListener('click', function(e) {
+            const button = document.getElementById("profile-menu-button");
+            const dropdown = document.getElementById("profile-dropdown");
+            if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add("hidden");
+            }
         });
     </script>
 </body>

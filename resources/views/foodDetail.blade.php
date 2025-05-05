@@ -1,8 +1,6 @@
 
 <style>
-    .work-sans {
-        font-family: 'Work Sans', sans-serif;
-    }
+
 
     #menu-toggle:checked+#menu {
         display: block;
@@ -53,7 +51,7 @@
 
 <x-layout>
     <x-navigation/>
-    <div class="w-full min-h-screen bg-gray-100 flex">
+    <div class="w-full min-h-screen bg-[#FFF8E6] flex font-[Instrument Sans]">
         <!-- Carousel Section (Left Side) -->
         <div class="carousel relative container mx-auto bg-gray-800" style="max-width:1600px;">
             <div class="carousel-inner relative overflow-hidden w-full">
@@ -66,7 +64,7 @@
                     <input class="carousel-open" type="radio" id="carousel-{{ $index + 1 }}" name="carousel"
                         aria-hidden="true" hidden="true" {{ $index === 0 ? 'checked="checked"' : '' }}>
                     <div class="carousel-item absolute opacity-0" style="height:100vh;">
-                        <div class="block h-full w-full mx-auto flex pt-6 md:pt-0 md:items-center bg-cover bg-center"
+                        <div class="block h-120 w-150 mx-auto flex pt-6 md:pt-0 md:items-center bg-cover bg-center"
                             style="background-image: url('{{ asset($image) }}'); background-size: cover; background-position: center;">
                         </div>
                     </div>
@@ -109,12 +107,12 @@
                     'foodPrice' => $menuDay->foodInMenuDay->foodPrice,
                     'foodImage' => $menuDay->foodInMenuDay->foodImage,
                 ]) }}">
-                <button type="submit" class="mt-6 w-full bg-gray-900 text-white py-3 px-6 rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600">
+                <button type="submit" class="mt-6 w-full bg-[#E5CBA6] text-white py-3 px-6 rounded-lg hover:bg-[#d6b88d] focus:outline-none focus:ring-2 focus:ring-gray-600">
                     Add to cart
                 </button>
             </form>
 
-            <a href="/home" class="mt-6 block w-full bg-gray-200 text-black py-3 px-6 rounded-lg text-center hover:bg-gray-300 ">
+            <a href="/home" class="mt-6 block w-full bg-white text-black py-3 px-6 rounded-lg text-center hover:bg-[#d6b88d] ">
                 Back
             </a>
 
