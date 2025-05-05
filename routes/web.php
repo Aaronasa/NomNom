@@ -17,7 +17,7 @@ Route::get('/register', function () {
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 // admin
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+// Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin');
     Route::get('/', [AdminController::class, 'getAllUsers'])->name('admin.users');
     Route::delete('/{user}', [AdminController::class, 'deleteuser'])->name('admin.deleteuser');
@@ -41,44 +41,43 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/order-details/{id}/edit', [AdminController::class, 'editOrderDetail'])->name('admin.orderDetails.edit');
     Route::put('/order-details/{id}', [AdminController::class, 'updateOrderDetail'])->name('admin.orderDetails.update');
     Route::delete('/order-details/{id}', [AdminController::class, 'deleteOrderDetail'])->name('admin.orderDetails.delete');
-});
+// });
 
 // User
 // Rute yang memerlukan login (middleware auth)
 // Route::middleware(['auth', 'role:user'])->group(function () {
-// Logout
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    // Logout
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Menu dan pesanan
-Route::get('/home', [MenuDayController::class, 'ViewMenuDay'])->name('home');
-Route::get('/order', [MenuDayController::class, 'ViewOrder'])->name('order.view');
-Route::post('/cart/add', [MenuDayController::class, 'addToCart'])->name('cart.add');
-Route::get('/cart', [MenuDayController::class, 'showCart'])->name('cart.show');
-Route::post('/cart/finish', [MenuDayController::class, 'cartfinish'])->name('cart.finish');
-Route::delete('/cart/remove', [MenuDayController::class, 'removeCart'])->name('cart.remove');
+    // Menu dan pesanan
+    Route::get('/home', [MenuDayController::class, 'ViewMenuDay'])->name('home');
+    Route::get('/order', [MenuDayController::class, 'ViewOrder'])->name('order.view');
+    Route::post('/cart/add', [MenuDayController::class, 'addToCart'])->name('cart.add');
+    Route::get('/cart', [MenuDayController::class, 'showCart'])->name('cart.show');
+    Route::post('/cart/finish', [MenuDayController::class, 'cartfinish'])->name('cart.finish');
+    Route::delete('/cart/remove', [MenuDayController::class, 'removeCart'])->name('cart.remove');
 
-Route::get('food/{id}', [MenuDayController::class, 'foodDetail'])->name('food.detail');
+    Route::get('food/{id}', [MenuDayController::class, 'foodDetail'])->name('food.detail');
 
 
-Route::get('/detail', [AuthController::class, 'showUpdateForm'])->name('ProfileDetail.update');
-Route::put('/profile/update', [AuthController::class, 'update'])->middleware('auth');
-Route::post('/account/delete', [AuthController::class, 'deleteAccount'])->name('account.delete')->middleware('auth');
+    Route::get('/detail', [AuthController::class, 'showUpdateForm'])->name('ProfileDetail.update');
+    Route::put('/profile/update', [AuthController::class, 'update'])->middleware('auth');
+    Route::post('/account/delete', [AuthController::class, 'deleteAccount'])->name('account.delete')->middleware('auth');
 
-// Riwayat pesanan
-Route::get('/history', [OrderController::class, 'index'])->name('history');
-Route::get('/orders/{order}/details', [OrderController::class, 'getOrderDetails'])->name('order.details');
-Route::get('/order/{order}/detail', [OrderController::class, 'showOrderDetail'])->name('order.detail.page');
+    // Riwayat pesanan
+    Route::get('/history', [OrderController::class, 'index'])->name('history');
+    Route::get('/orders/{order}/details', [OrderController::class, 'getOrderDetails'])->name('order.details');
+    Route::get('/order/{order}/detail', [OrderController::class, 'showOrderDetail'])->name('order.detail.page');
 
-// Riwayat pesanan (Alternatif route)
-Route::get('/orders/history', [OrderController::class, 'index'])->name('order.history');
-// Add these routes to your web.php
-Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
-Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
-Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
+    // Riwayat pesanan (Alternatif route)
+    Route::get('/orders/history', [OrderController::class, 'index'])->name('order.history');
+    // Add these routes to your web.php
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
 
-Route::get('/map', function () {
-    return view('map');
-});
-    
+    Route::get('/map', function () {
+        return view('map');
+    });
 // });

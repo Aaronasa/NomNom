@@ -207,7 +207,7 @@
         <!-- Bottom Footer -->
         <div class="flex flex-col md:flex-row justify-between items-center">
             <div class="text-white text-sm mb-4 md:mb-0">
-                &copy; <span id="current-year">2025</span> Your Brand. All rights reserved.
+                &copy; <span id="current-year">2025</span> NOMNOM Platform. All rights reserved.
             </div>
             <div class="flex space-x-6">
                 <a href="#" class="text-white hover:text-[#3F2812]transition duration-300 text-sm">Privacy
@@ -219,10 +219,7 @@
             </div>
         </div>
     </div>
-    <div class="border-t border-[#3F2812] mt-8 pt-4 text-center text-[#3F2812] text-sm">
-        © 2025 DEI Platform. All rights reserved.
-    </div>
-
+    
     <!-- Script to update year automatically -->
     <script>
         document.getElementById('current-year').textContent = new Date().getFullYear();

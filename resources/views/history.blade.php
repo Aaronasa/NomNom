@@ -43,7 +43,7 @@
                                     $menuDay = App\Models\MenuDay::with('foodInMenuDay')->find($item->menuDay_id);
                                     $foodName = $menuDay ? $menuDay->foodInMenuDay->foodName : 'Unknown Item';
                                 @endphp
-                                <div class="bg-[#F4ECD8] shadow-lg *:rounded-md p-3 mb-2 flex justify-between items-center">
+                                <div class="bg-[#F4ECD8] shadow-lg mt-5 p-3 mb-2 flex justify-between items-center">
                                     <span class="font-medium text-gray-800">{{ $foodName }}</span>
                                     <div class="flex items-center gap-2">
                                         <span class="text-gray-600">{{ $item->unit }}x</span>
@@ -81,14 +81,7 @@
                             </div>
                             
                             <!-- View Details Button -->
-                            <div class="mt-4 text-right">
-                                <form action="{{ route('order.detail.page', ['order' => $order->id]) }}" method="get">
-                                    <button type="submit"
-                                        class="px-3 py-1 bg-green-100 hover:bg-green-200 text-sm text-green-800 font-semibold rounded">
-                                        View Details
-                                    </button>
-                                </form>
-                            </div>
+                    
                         </div>
                     </div>
                 @endforeach
