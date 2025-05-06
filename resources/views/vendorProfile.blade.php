@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="min-h-screen font-[Instrument Sans] bg-[#FFF8E6] py-12">
+    <div class="min-h-screen bg-[#FFF8E6] py-12">
         <div class="container mx-auto px-4">
             <div class="flex justify-center flex-col md:flex-row gap-6">
                 <!-- User Profile Card -->
