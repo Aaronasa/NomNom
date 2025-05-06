@@ -26,18 +26,14 @@ class roleCheck
 
         // Validasi role_id
         if ($role === 'admin' && $roleId !== 1) {
-            abort('Access restricted to admins only.');
+            abort(403, 'Access restricted to admins only.');
         } elseif ($role === 'user' && $roleId !== 2) {
             abort(403, 'Access restricted to regular users only.');
-        }else if ($role == 'vendor' && $user->role_id !== 3) {
+        } elseif ($role === 'vendor' && $roleId !== 3) {
             abort(403, 'Access restricted to vendors only.');
         }
 
         // Jika lolos validasi, lanjutkan request
         return $next($request);
     }
-
-
 }
-
-

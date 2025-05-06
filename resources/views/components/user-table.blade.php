@@ -85,7 +85,7 @@
                                     <td class="py-3 px-4 font-medium">{{ $user->username }}</td>
                                     <td class="py-3 px-4">{{ $user->email }}</td>
                                     <td class="py-3 px-4">{{ $user->phone }}</td>
-                                    <td class="py-3 px-4">{{ $user->address }}</td>
+                                    <td class="py-3 px-4">{{ $user->address }}</td> 
                                     <td class="py-3 px-4">
                                         <div class="flex justify-center gap-2">
                                             <a href="{{ route('admin.edituser', $user->id) }}"

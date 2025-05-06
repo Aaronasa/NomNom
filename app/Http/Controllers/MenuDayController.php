@@ -42,7 +42,7 @@ class MenuDayController extends Controller
     public function foodDetail($id)
     {
         $menuDay = MenuDay::with('foodInMenuDay', 'foodInMenuDay.restaurantInFood')
-            ->findOrFail($id);  
+            ->findOrFail($id);
         return view('foodDetail', [
             'menuDay' => $menuDay,
         ]);
@@ -57,7 +57,7 @@ class MenuDayController extends Controller
             $food = json_decode($food, true);
         }
 
-        $cart = session()->get('cart', []); 
+        $cart = session()->get('cart', []);
 
         $check = false;
         foreach ($cart as $index => $item) {
@@ -71,22 +71,22 @@ class MenuDayController extends Controller
         if (!$check) {
             // Add food item to the cart
             $cart[] = [
-                'menuDayId' => $food['menuDayId'], 
+                'menuDayId' => $food['menuDayId'],
                 'foodName' => $food['foodName'],
                 'foodPrice' => $food['foodPrice'],
                 'foodImage' => $food['foodImage'],
-                'quantity' => 1, 
+                'quantity' => 1,
             ];
         }
 
-        session()->put('cart', $cart); 
+        session()->put('cart', $cart);
 
         return redirect()->back()->with('success', 'Food added to cart successfully.');
     }
 
     public function showCart()
     {
-        $cart = session()->get('cart', []); 
+        $cart = session()->get('cart', []);
 
         $totalPrice = array_reduce($cart, function ($total, $item) {
             return $total + ($item['foodPrice'] * $item['quantity']);
@@ -100,7 +100,7 @@ class MenuDayController extends Controller
 
     public function cartfinish()
     {
-        $cart = session()->get('cart', []); 
+        $cart = session()->get('cart', []);
 
         if (empty($cart)) {
             return redirect()->back()->with('error', 'Cart is empty.');
@@ -110,39 +110,62 @@ class MenuDayController extends Controller
             return $total + $item['foodPrice'] * $item['quantity'];
         }, 0);
 
+        // Store cart data in session for payment page
+        session()->put('payment_data', [
+            'cart' => $cart,
+            'totalPrice' => $totalPrice
+        ]);
+
+        // Redirect to payment page instead of creating order immediately
+        return redirect()->route('payment')->with('success', 'Proceed to payment.');
+    }
+
+    public function paymentfinish()
+    {
+        $paymentData = session()->get('payment_data', []);
+        $cart = $paymentData['cart'] ?? [];
+
+        if (empty($cart)) {
+            return redirect()->back()->with('error', 'No items to process.');
+        }
+
+        $totalPrice = $paymentData['totalPrice'] ?? 0;
+
         // Create a new order
         $order = new Order();
-        $order->user_id = Auth::id(); 
-        $order->orderDate = now(); 
-        $order->totalPrice = $totalPrice; 
-        $order->paymentStatus = '0'; 
+        $order->user_id = Auth::id();
+        $order->orderDate = now();
+        $order->totalPrice = $totalPrice;
+        $order->paymentStatus = '1'; // Set to paid (1) since payment is completed
         $order->save();
 
         foreach ($cart as $item) {
             $order->orderDetailInOrder()->create([
-                'menuDay_id' => $item['menuDayId'], 
+                'menuDay_id' => $item['menuDayId'],
                 'price' => $item['foodPrice'],
-                'unit' => $item['quantity'], 
-                'deliveryStatus_id' => 1, 
+                'unit' => $item['quantity'],
+                'deliveryStatus_id' => 1,
             ]);
         }
 
-        session()->forget('cart'); 
+        // Clear cart and payment data from session
+        session()->forget(['cart', 'payment_data']);
 
-        return redirect()->route('order.history')->with('success', 'Order placed successfully.');
+        return redirect()->route('order.history')->with('success', 'Payment completed successfully.');
     }
 
-    public function removeCart(Request $request){
+    public function removeCart(Request $request)
+    {
         $menuDayId = $request->input('menuDayId');
-        $cart = session()->get('cart', []) ;
+        $cart = session()->get('cart', []);
 
         $cart = array_map(function ($item) use ($menuDayId) {
             if ($item['menuDayId'] == $menuDayId) {
-                $item['quantity']--; 
+                $item['quantity']--;
             }
             return $item;
         }, $cart);
-    
+
         $cart = array_filter($cart, function ($item) {
             return $item['quantity'] > 0;
         });
