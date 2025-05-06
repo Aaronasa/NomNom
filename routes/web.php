@@ -20,8 +20,8 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
 
 // Vendor Routes
 Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () {
-//     Dashboard
-    Route::get('/dashboard', [VendorController::class, 'dashboard'])->name('VendorDashboard');
+    // Dashboard
+    Route::get('/', [VendorController::class, 'dashboard'])->name('VendorDashboard');
     
     // Restaurant Profile
     Route::get('/profile', [VendorController::class, 'profile'])->name('vendor.profile');
@@ -40,8 +40,6 @@ Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () 
     Route::get('/orders/{id}', [VendorController::class, 'showOrder'])->name('vendor.orders.show');
     Route::post('/orders/status/{id}', [VendorController::class, 'updateOrderStatus'])->name('vendor.orders.updateStatus');
 });
-
-
 
 // admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
