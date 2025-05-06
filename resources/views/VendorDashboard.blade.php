@@ -85,12 +85,12 @@
                         <span class="text-[#553827] font-medium">View Orders</span>
                     </a>
 
-                    {{-- <a href="{{ route('vendor.profile') ?? '#' }}" class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
+                    <a href="{{ route('vendor.profile') ?? '#' }}" class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                         <span class="text-[#553827] font-medium">Vendor Profile</span>
-                    </a> --}}
+                    </a>
                 </div>
             </div>
 
@@ -146,12 +146,12 @@
                 @endif
             </div>
 
-            <!-- Recent Products -->
+            <!-- Your Products -->
             <div class="mt-8">
                 <h2 class="text-xl font-bold text-[#553827] mb-4">Your Products</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    @if(isset($products) && count($products) > 0)
-                        @foreach($products as $product)
+                    @if(isset($foods) && count($foods) > 0)
+                        @foreach($foods as $product)
                             <div class="bg-white rounded-lg shadow overflow-hidden border border-[#E2CEB1]">
                                 <div class="h-48 bg-gray-200">
                                     @if($product->image)
