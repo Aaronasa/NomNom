@@ -34,7 +34,7 @@ class AuthController extends Controller
             } elseif ($user->role_id == 2) {
                 return redirect()->intended('/home');
             } elseif ($user->role_id == 3) {
-                return redirect()->intended('/dashboard');
+                return redirect()->intended(route('VendorDashboard'));
             } else {
                 Auth::logout();
                 return back()->withErrors(['email' => 'Unauthorized access.']);
