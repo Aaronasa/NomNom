@@ -1,12 +1,11 @@
 <x-layout>
-
-    <body class="bg-gray-100 font-family-karla">
+    <body class="bg-gray-100 font-[Instrument Sans]">
         <div class="flex min-h-screen">
             <!-- Fixed Sidebar -->
 
 
             <!-- Main Content - With left margin to prevent overlap -->
-            <div class="flex-1 flex flex-col ml-64">
+            <div class="flex-1 flex flex-col">
                 <!-- Sticky Header with Search and Create Button -->
                 <header class="bg-white shadow-md sticky top-0 z-10 px-6 py-4">
                     <div class="max-w-7xl mx-auto flex justify-between items-center">

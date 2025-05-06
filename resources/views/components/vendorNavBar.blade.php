@@ -1,4 +1,4 @@
-<div class="bg-white shadow-md">
+<div class="sticky top-0 bg-white shadow-md">
     <div class="container mx-auto px-4 py-6">
         <div class="flex justify-between items-center">
             <h1 class="text-2xl font-bold text-[#553827]">Vendor Dashboard</h1>

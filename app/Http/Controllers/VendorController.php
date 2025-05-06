@@ -148,7 +148,8 @@ class VendorController extends Controller
             return redirect()->route('vendor.profile')->with('error', 'Please complete your restaurant profile first.');
         }
 
-        return view('vendor.products.create', compact('restaurant'));
+        // This should return vendorAddProduct.blade.php
+        return view('vendorAddProduct', compact('restaurant'));
     }
 
     /**
