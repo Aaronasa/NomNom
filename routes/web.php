@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MenuDayController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\ReviewController;
 use App\Models\MenuDay;
@@ -17,7 +18,7 @@ Route::get('/register', function () {
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 // admin
-// Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin');
     Route::get('/', [AdminController::class, 'getAllUsers'])->name('admin.users');
     Route::delete('/{user}', [AdminController::class, 'deleteuser'])->name('admin.deleteuser');
@@ -41,7 +42,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
     Route::get('/order-details/{id}/edit', [AdminController::class, 'editOrderDetail'])->name('admin.orderDetails.edit');
     Route::put('/order-details/{id}', [AdminController::class, 'updateOrderDetail'])->name('admin.orderDetails.update');
     Route::delete('/order-details/{id}', [AdminController::class, 'deleteOrderDetail'])->name('admin.orderDetails.delete');
-// });
+});
 
 // User
 // Rute yang memerlukan login (middleware auth)
@@ -60,7 +61,9 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 
     Route::get('food/{id}', [MenuDayController::class, 'foodDetail'])->name('food.detail');
 
-
+    Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
+    Route::post('/payment/process', [PaymentController::class, 'process'])->name('payment.process');
+    
     Route::get('/detail', [AuthController::class, 'showUpdateForm'])->name('ProfileDetail.update');
     Route::put('/profile/update', [AuthController::class, 'update'])->middleware('auth');
     Route::post('/account/delete', [AuthController::class, 'deleteAccount'])->name('account.delete')->middleware('auth');
