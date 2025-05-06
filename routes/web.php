@@ -10,12 +10,18 @@ use App\Http\Controllers\ReviewController;
 use App\Models\MenuDay;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [AuthController::class, 'showLoginForm'])->name('welcome');
+Route::get('/', [AuthController::class, 'showLoginForms'])->name('welcome');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/register', function () {
     return view('register');
 })->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+
+Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('VendorDashboard');
+    })->name('VendorDashboard');
+});
 
 // admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
@@ -46,7 +52,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 
 // User
 // Rute yang memerlukan login (middleware auth)
-// Route::middleware(['auth', 'role:user'])->group(function () {
+Route::middleware(['auth', 'role:user'])->group(function () {
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -83,4 +89,4 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/map', function () {
         return view('map');
     });
-// });
+});
