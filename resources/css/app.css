@@ -9,3 +9,32 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #d1d5db;
+    transition: color 0.2s;
+}
+
+.rating input:checked ~ label,
+.rating label:hover,
+.rating label:hover ~ label {
+    color: #f59e0b;
+}
+
+.rating input:checked + label:hover,
+.rating input:checked ~ label:hover,
+.rating label:hover ~ input:checked ~ label,
+.rating input:checked ~ label:hover ~ label {
+    color: #f59e0b;
+}
