@@ -19,8 +19,8 @@ Route::get('/register', function () {
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
 // Vendor Routes
-// Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () {
-    // Dashboard
+Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () {
+//     Dashboard
     Route::get('/dashboard', [VendorController::class, 'dashboard'])->name('VendorDashboard');
     
     // Restaurant Profile
@@ -39,7 +39,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
     Route::get('/orders', [VendorController::class, 'ordersIndex'])->name('vendor.orders.index');
     Route::get('/orders/{id}', [VendorController::class, 'showOrder'])->name('vendor.orders.show');
     Route::post('/orders/status/{id}', [VendorController::class, 'updateOrderStatus'])->name('vendor.orders.updateStatus');
-// });
+});
 
 
 
