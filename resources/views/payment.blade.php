@@ -87,7 +87,7 @@
         </div>
 
         <!-- QR Section -->
-        <div class="flex items-center justify-between bg-white px-6 py-4 shadow rounded-xl">
+        {{-- <div class="flex items-center justify-between bg-white px-6 py-4 shadow rounded-xl">
             <div class="flex items-center space-x-4">
                 <img src="{{ asset('images/qris.png') }}" alt="QRIS" class="w-16" />
                 <p class="font-bold text-lg">Rp. 114.000</p>
@@ -99,7 +99,7 @@
                 @csrf
                 <button type="submit" class="checkout-btn">Check-out</button>
             </form>
-        </div>
+        </div> --}}
 
     </div>
 
