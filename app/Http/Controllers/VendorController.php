@@ -459,4 +459,17 @@ class VendorController extends Controller
 
         return redirect()->route('vendor.profile')->with('success', 'Profile updated successfully.');
     }
+    public function uploadProof(Request $request, $orderDetailId)
+    {
+        $request->validate([
+            'proof_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $orderDetail = OrderDetail::findOrFail($orderDetailId);
+
+        // Save image as orderDetailID.jpg
+        $request->file('proof_image')->move(public_path('image/proofs'), $orderDetail->id . '.jpg');
+
+        return redirect()->back()->with('success', 'Proof uploaded successfully.');
+    }
 }

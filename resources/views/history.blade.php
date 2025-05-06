@@ -12,7 +12,7 @@
     <section class="history-container">
         <div class="container mx-auto px-4 py-6">
             <h1 class="text-2xl font-semibold mb-4 text-[#3F2812]">My Order</h1>
-            
+
             <div class="max-w-2xl mx-auto">
                 @foreach ($orders as $order)
                     <div class="mb-8">
@@ -36,31 +36,65 @@
                         <!-- Order Content -->
                         <div class="border-t border-b border-gray-300 py-4">
                             <h2 class="text-[#3F2812] text-lg mb-2">Order Items :</h2>
-                            
+
                             <!-- Order Items - Using orderDetailInOrder relationship -->
                             @foreach ($order->orderDetailInOrder as $item)
                                 @php
                                     $menuDay = App\Models\MenuDay::with('foodInMenuDay')->find($item->menuDay_id);
-                                    $foodName = $menuDay ? $menuDay->foodInMenuDay->foodName : 'Unknown Item';
+                                    $food = $menuDay ? $menuDay->foodInMenuDay : null;
+                                    $foodName = $food ? $food->foodName : 'Unknown';
+                                    $foodImage = $food ? explode(',', $food->foodImage)[0] ?? null : null;
                                 @endphp
-                                <div class="bg-[#F4ECD8] shadow-lg mt-5 p-3 mb-2 flex justify-between items-center">
-                                    <span class="font-medium text-gray-800">{{ $foodName }}</span>
+                                <div class="bg-[#F4ECD8] shadow-lg mt-5 p-3 mb-2 flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        @if ($foodImage)
+                                            <img src="{{ asset($foodImage) }}" alt="{{ $foodName }}"
+                                                class="w-16 h-16 object-cover rounded">
+                                        @else
+                                            <div
+                                                class="w-16 h-16 flex items-center justify-center bg-gray-100 text-gray-500">
+                                                No Image</div>
+                                        @endif
+                                        <span class="font-medium text-gray-800">{{ $foodName }}</span>
+                                    </div>
                                     <div class="flex items-center gap-2">
                                         <span class="text-gray-600">{{ $item->unit }}x</span>
-                                        <span class="text-gray-800">Rp. {{ number_format($item->price, 0, ',', '.') }}</span>
+                                        <span class="text-gray-800">Rp.
+                                            {{ number_format($item->price, 0, ',', '.') }}</span>
                                     </div>
                                 </div>
+                                @php
+                                    // $filename =  $item->id . '.jpg';
+                                    $filename = '17.jpg'; 
+                                    $proofPath = public_path('image/proofs/' . $filename);
+                                @endphp
+
+                                @if (file_exists($proofPath))
+                                    <div class="mt-2">
+                                        <p class="text-gray-600 text-sm">Proof of Delivery:</p>
+                                        <img src="{{ asset('image/proofs/' . $filename) }}" alt="Proof of Delivery"
+                                            class="w-32 h-32 object-cover rounded mt-1">
+                                    </div>
+                                @else
+                                    <div class="mt-2">
+                                        <p class="text-sm text-gray-500 italic">No proof uploaded yet.</p>
+                                    </div>
+                                @endif
                             @endforeach
-                            
+
                             <!-- Order Details -->
                             <div class="flex justify-between mt-4">
                                 <div>
                                     <p class="text-gray-600 text-sm">Delivery Status :</p>
                                     <p class="font-medium">
                                         @php
-                                            $deliveryStatus = ($order->orderDetailInOrder->first() && $order->orderDetailInOrder->first()->deliveryStatus_id) 
-                                                ? ($order->orderDetailInOrder->first()->deliveryStatus_id == 1 ? 'On Process' : 'Delivered') 
-                                                : 'On Process';
+                                            $deliveryStatus =
+                                                $order->orderDetailInOrder->first() &&
+                                                $order->orderDetailInOrder->first()->deliveryStatus_id
+                                                    ? ($order->orderDetailInOrder->first()->deliveryStatus_id == 1
+                                                        ? 'On Process'
+                                                        : 'Delivered')
+                                                    : 'On Process';
                                         @endphp
                                         {{ $deliveryStatus }}
                                     </p>
@@ -68,25 +102,25 @@
                                 <div class="text-right">
                                     <p class="text-gray-600 text-sm">Order Date :</p>
                                     <p class="font-medium">
-                                        {{ \Carbon\Carbon::parse($order->orderDate)->format('d F Y H:i') }} 
+                                        {{ \Carbon\Carbon::parse($order->orderDate)->format('d F Y H:i') }}
                                         {{ \Carbon\Carbon::parse($order->orderDate)->format('A') }}
                                     </p>
                                 </div>
                             </div>
-                            
+
                             <!-- Total Price -->
                             <div class="mt-4">
                                 <p class="text-gray-600 text-sm">Total Price :</p>
                                 <p class="font-medium">Rp. {{ number_format($order->totalPrice, 0, ',', '.') }}</p>
                             </div>
-                            
+
                             <!-- View Details Button -->
-                    
+
                         </div>
                     </div>
                 @endforeach
 
-                @if(count($orders) == 0)
+                @if (count($orders) == 0)
                     <div class="text-center py-8">
                         <p class="text-[#7A6247]">You have no order history.</p>
                     </div>

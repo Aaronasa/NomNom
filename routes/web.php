@@ -39,6 +39,9 @@ Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () 
     Route::get('/orders', [VendorController::class, 'ordersIndex'])->name('vendor.orders.index');
     Route::get('/orders/{id}', [VendorController::class, 'showOrder'])->name('vendor.orders.show');
     Route::post('/orders/status/{id}', [VendorController::class, 'updateOrderStatus'])->name('vendor.orders.updateStatus');
+
+    Route::post('/vendor/orders/{orderDetailId}/upload-proof', [VendorController::class, 'uploadProof'])->name('vendor.orders.uploadProof');
+
 });
 
 // admin
