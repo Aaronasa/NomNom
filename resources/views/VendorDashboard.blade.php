@@ -71,28 +71,18 @@
             <!-- Quick Actions -->
             <div class="mt-8">
                 <h2 class="text-xl font-bold text-[#553827] mb-4">Quick Actions</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <a href="{{ route('vendor.products.create') ?? '#' }}"
-                        class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2"
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                        <span class="text-[#553827] font-medium">Add New Product</span>
-                    </a>
-
-                    <a href="{{ route('vendor.products.index') ?? '#' }}"
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 ">
+                    <a href="{{ route('vendor.products.index') }}"
                         class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                         </svg>
-                        <span class="text-[#553827] font-medium">Manage Products</span>
+                        <span class="text-[#553827] font-medium">Manage or Add Products</span>
                     </a>
 
-                    <a href="{{ route('vendor.orders.index') ?? '#' }}"
+                    <a href="{{ route('vendor.orders.index') }}"
                         class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -102,7 +92,7 @@
                         <span class="text-[#553827] font-medium">View Orders</span>
                     </a>
 
-                    <a href="{{ route('vendor.profile') ?? '#' }}"
+                    <a href="{{ route('vendor.profile') }}"
                         class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">

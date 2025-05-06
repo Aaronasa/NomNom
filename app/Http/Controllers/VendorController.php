@@ -122,7 +122,19 @@ class VendorController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('vendor.products.index', compact('products'));
+
+        $foodIds = $restaurant->restaurantToFood()->pluck('id');
+        $menuDayIds = MenuDay::whereIn('food_id', $foodIds)->pluck('id');
+
+        $orderDetails = OrderDetail::whereIn('menuDay_id', $menuDayIds)
+            ->with([
+                'orderInOrderDetail',
+                'orderInOrderDetail.user',
+                'menuDayInOrderDetail.foodInMenuDay',
+                'deliveryStatusInOrderDetail'
+            ])
+            ->get();
+        return view('vendorManageProducts', compact('products', 'orderDetails'));
     }
 
     /**
@@ -388,12 +400,16 @@ class VendorController extends Controller
     /**
      * Show the vendor profile form
      */
-    public function showProfile()
+    public function profile()
     {
         $user = Auth::user();
         $restaurant = Restaurant::where('id', $user->restaurant_id)->first();
 
-        return view('vendor.profile', compact('user', 'restaurant'));
+        // Change this line:
+        // return view('vendor.profile', compact('user', 'restaurant'));
+
+        // To this:
+        return view('vendorProfile', compact('user', 'restaurant'));
     }
 
     /**
