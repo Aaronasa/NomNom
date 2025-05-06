@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
             'password' => bcrypt('admin1'),
             'phone' => '08123456780',
             'address' => 'Jalan Raya 11',
-            'role_id' => 1,
+            'role_id' => 2,
             'remember_token' => Str::random(10),
         ]);
         User::create([
