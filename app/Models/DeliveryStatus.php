@@ -11,7 +11,7 @@ class DeliveryStatus extends Model
     use HasFactory;
     
     protected $fillable = [
-        'statusName'
+        'statusName',
     ];
 
     public function deliveryStatusToOrderDetail(): HasMany {

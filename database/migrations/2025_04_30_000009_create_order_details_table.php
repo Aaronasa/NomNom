@@ -15,6 +15,8 @@ return new class extends Migration
                 $table->id();
                 $table->decimal('price', 8, 2);
                 $table->string('unit');
+                $table->string('namapenerima')->nullable();
+                $table->string('image')->nullable();
                 $table->foreignId('deliveryStatus_id')->constrained('delivery_statuses')->onDelete('cascade');
                 $table->foreignId('menuDay_id')->constrained('menu_days')->onDelete('cascade');
                 $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
