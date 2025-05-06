@@ -10,12 +10,18 @@ use App\Http\Controllers\ReviewController;
 use App\Models\MenuDay;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [AuthController::class, 'showLoginForm'])->name('welcome');
+Route::get('/', [AuthController::class, 'showLoginForms'])->name('welcome');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/register', function () {
     return view('register');
 })->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+
+Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('VendorDashboard');
+    })->name('VendorDashboard');
+});
 
 // admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
@@ -46,10 +52,17 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 
 // User
 // Rute yang memerlukan login (middleware auth)
+<<<<<<< HEAD
 // Route::middleware(['auth', 'role:user'])->group(function () {
 // Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+=======
+Route::middleware(['auth', 'role:user'])->group(function () {
+    // Logout
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+>>>>>>> bc0f7b9cc4ae32f9a2adf8eb11276f2330a63c9c
 
 // Menu dan pesanan
 Route::get('/home', [MenuDayController::class, 'ViewMenuDay'])->name('home');
@@ -80,4 +93,11 @@ Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store
 Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
 
+<<<<<<< HEAD
 // });
+=======
+    Route::get('/map', function () {
+        return view('map');
+    });
+});
+>>>>>>> bc0f7b9cc4ae32f9a2adf8eb11276f2330a63c9c

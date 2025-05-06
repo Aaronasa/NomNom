@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function showLoginForm()
+    public function showLoginForms()
     {
         return view('login');
     }
@@ -33,6 +33,8 @@ class AuthController extends Controller
                 return redirect()->intended('/admin');
             } elseif ($user->role_id == 2) {
                 return redirect()->intended('/home');
+            } elseif ($user->role_id == 3) {
+                return redirect()->intended('/dashboard');
             } else {
                 Auth::logout();
                 return back()->withErrors(['email' => 'Unauthorized access.']);
@@ -58,6 +60,7 @@ class AuthController extends Controller
             'password' => 'required|string|min:8',
             'phone' => 'required|string|max:15',
             'address' => 'required|string|max:255',
+            'role_id' => 'required|in:2,3',
         ]);
 
         if ($validator->fails()) {
@@ -70,11 +73,12 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
             'address' => $request->address,
-            'role_id' => 2,
+            'role_id' => $request->role_id, 
         ]);
 
         return redirect('/')->with('success', 'Registration successful! Please login.');
     }
+    
     public function showUpdateForm()
     {
         $user = Auth::user();
