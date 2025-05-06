@@ -1,19 +1,6 @@
 <x-layout>
+    <x-vendorNavbar></x-vendorNavbar>
     <div class="w-full min-h-screen bg-[#FFF8E6] font-[Instrument Sans]">
-        <!-- Vendor Dashboard Header -->
-        <div class="bg-white shadow-md">
-            <div class="container mx-auto px-4 py-6">
-                <div class="flex justify-between items-center">
-                    <h1 class="text-2xl font-bold text-[#553827]">Vendor Dashboard</h1>
-                    <div class="flex items-center space-x-4">
-                        <span class="text-gray-600">{{ Auth::user()->username }}</span>
-                        <a href="{{ route('logout') }}"
-                            class="bg-[#cfad7d] text-white px-4 py-2 rounded hover:bg-[#E5CBA6] transition">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Dashboard Content -->
         <div class="container mx-auto px-4 py-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -71,49 +58,29 @@
             <!-- Quick Actions -->
             <div class="mt-8">
                 <h2 class="text-xl font-bold text-[#553827] mb-4">Quick Actions</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <a href="{{ route('vendor.products.create') ?? '#' }}"
-                        class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2"
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 ">
+                    <a href="{{ route('vendor.products.index') }}" class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                         </svg>
-                        <span class="text-[#553827] font-medium">Add New Product</span>
+                        <span class="text-[#553827] font-medium">Manage or Add Products</span>
                     </a>
 
-                    <a href="{{ route('vendor.products.index') ?? '#' }}"
-                        class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2"
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                        </svg>
-                        <span class="text-[#553827] font-medium">Manage Products</span>
-                    </a>
-
-                    <a href="{{ route('vendor.orders.index') ?? '#' }}"
-                        class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2"
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    <a href="{{ route('vendor.orders.index') }}" class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                         </svg>
                         <span class="text-[#553827] font-medium">View Orders</span>
                     </a>
 
-                    <a href="{{ route('vendor.profile') ?? '#' }}"
-                        class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2"
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    <a href="{{ route('vendor.profile') }}" class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                         <span class="text-[#553827] font-medium">Vendor Profile</span>
                     </a>
                 </div>
             </div>
-
             <!-- Recent Orders -->
             <div class="mt-8">
                 <h2 class="text-xl font-bold text-[#553827] mb-4">Recent Orders</h2>

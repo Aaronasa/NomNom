@@ -388,12 +388,16 @@ class VendorController extends Controller
     /**
      * Show the vendor profile form
      */
-    public function showProfile()
+    public function profile()
     {
         $user = Auth::user();
         $restaurant = Restaurant::where('id', $user->restaurant_id)->first();
 
-        return view('vendor.profile', compact('user', 'restaurant'));
+        // Change this line:
+        // return view('vendor.profile', compact('user', 'restaurant'));
+
+        // To this:
+        return view('vendorProfile', compact('user', 'restaurant'));
     }
 
     /**
