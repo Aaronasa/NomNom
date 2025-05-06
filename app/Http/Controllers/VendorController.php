@@ -30,7 +30,7 @@ class VendorController extends Controller
 
         if ($restaurant) {
             // Get vendor's products using the relationship
-            $products = $restaurant->restaurantToFood()->latest()->take(4)->get();
+            $products = $restaurant->restaurantToFood()->latest()->get();
             $totalProducts = $restaurant->restaurantToFood()->count();
 
             // Get vendor's orders
