@@ -2,55 +2,66 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
-use App\Models\OrderDetail;
 use Illuminate\Http\Request;
+use App\Models\Order;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
     public function index()
     {
-        $cart = session('cart', []);
-        $subTotal = 0;
-        foreach ($cart as $item) {
-            $subTotal += $item['foodPrice'] * $item['quantity'];
+        $cart = session()->get('payment_cart', []);
+        $totalPrice = session()->get('payment_total', 0);
+
+        if (empty($cart)) {
+            return redirect()->route('cart.show')->with('error', 'Cart is empty.');
         }
-        
-        $deliveryFee = 5000;
-        $adminFee = 3000;
+
+        // Calculate fees
+        $subTotal = $totalPrice;
+        $deliveryFee = 10000; // Example fee
+        $adminFee = 2000; // Example fee
         $totalPrice = $subTotal + $deliveryFee + $adminFee;
-        $orderId = uniqid('ORD-');
-        
-        return view('payment', compact('cart', 'subTotal', 'deliveryFee', 'adminFee', 'totalPrice', 'orderId'));
+
+        return view('payment', [
+            'cart' => $cart,
+            'subTotal' => $subTotal,
+            'deliveryFee' => $deliveryFee,
+            'adminFee' => $adminFee,
+            'totalPrice' => $totalPrice,
+        ]);
     }
-    
+
     public function process(Request $request)
     {
-        // Process payment and create order record
-        $orderId = $request->input('order_id');
-        $cart = session('cart', []);
-        
-        // Create order record
+        $cart = session()->get('payment_cart', []);
+        $totalPrice = session()->get('payment_total', 0);
+
+        if (empty($cart)) {
+            return redirect()->route('cart.show')->with('error', 'Cart is empty.');
+        }
+
+        // Create order
         $order = new Order();
+        $order->user_id = Auth::id();
         $order->orderDate = now();
-        $order->totalPrice = $request->session()->get('totalPrice');
+        $order->totalPrice = $totalPrice;
         $order->paymentStatus = 1; // Paid
         $order->save();
-        
+
         // Create order details
         foreach ($cart as $item) {
-            $orderDetail = new OrderDetail();
-            $orderDetail->order_id = $order->id;
-            $orderDetail->menuDay_id = $item['menuDayId'];
-            $orderDetail->unit = $item['quantity'];
-            $orderDetail->price = $item['foodPrice'];
-            $orderDetail->deliveryStatus_id = 1; // On Process
-            $orderDetail->save();
+            $order->orderDetailInOrder()->create([
+                'menuDay_id' => $item['menuDayId'],
+                'price' => $item['foodPrice'],
+                'unit' => $item['quantity'],
+                'deliveryStatus_id' => 1, // Processing
+            ]);
         }
-        
-        // Clear cart session
-        $request->session()->forget('cart');
-        
-        return redirect()->route('history.index')->with('success', 'Payment successful!');
+
+        // Clear sessions
+        session()->forget(['cart', 'payment_cart', 'payment_total']);
+
+        return redirect()->route('order.history')->with('success', 'Payment successful!');
     }
 }

@@ -67,9 +67,9 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
     Route::get('food/{id}', [MenuDayController::class, 'foodDetail'])->name('food.detail');
 
-    Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
-    Route::post('/payment/process', [PaymentController::class, 'process'])->name('payment.process');
-    
+    //payment
+    Route::post('/payment', [MenuDayController::class, 'paymentfinish'])->name('payment.proses');
+
     Route::get('/detail', [AuthController::class, 'showUpdateForm'])->name('ProfileDetail.update');
     Route::put('/profile/update', [AuthController::class, 'update'])->middleware('auth');
     Route::post('/account/delete', [AuthController::class, 'deleteAccount'])->name('account.delete')->middleware('auth');
@@ -85,8 +85,4 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
     Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
-
-    Route::get('/map', function () {
-        return view('map');
-    });
 });
