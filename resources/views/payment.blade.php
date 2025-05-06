@@ -89,21 +89,21 @@
         <!-- QR Section -->
         <div class="flex items-center justify-between bg-white px-6 py-4 shadow rounded-xl mb-6">
             <div class="flex items-center space-x-4">
-                <img src="{{ asset('image/QRBCA.jpg') }}" alt="QRIS" class="w-16" />
+                <img src="{{ asset('image/QRDANA.jpg') }}" alt="QRIS" class="w-16" />
                 <p class="font-bold text-lg">Rp. {{ number_format($grandTotal, 0, ',', '.') }}</p>
             </div>
             <button class="bg-[#D7C5A9] text-white px-4 py-2 rounded-full" id="show-qr-btn">Show QR</button>
         </div>
         
         <!-- Payment Button -->
-        <div class="cart-footer">
+        {{-- <div class="cart-footer">
             <form action="{{ route('payment.process') }}" method="POST">
                 @csrf
                 <button type="submit" class="checkout-btn bg-[#D7C5A9] text-white px-4 py-3 rounded-xl w-full font-bold">
                     Complete Payment
                 </button>
             </form>
-        </div>
+        </div> --}}
 
     </div>
 
@@ -117,7 +117,7 @@
             <div class="flex justify-center mb-4">
                 <!-- Placeholder QR Code - in a real app, this would be generated -->
                 <div class="flex justify-center my-4">
-                    <img src="{{ asset('image/QRBCA.jpg') }}" alt="QR BCA" class="w-64 h-64 object-contain rounded-lg shadow" />
+                    <img src="{{ asset('image/QRDANA.jpg') }}" alt="QR BCA" class="w-64 h-64 object-contain rounded-lg shadow" />
                 </div>
             </div>
             <p class="text-center font-bold mb-2">Rp. {{ number_format($grandTotal, 0, ',', '.') }}</p>
