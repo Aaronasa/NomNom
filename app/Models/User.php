@@ -68,4 +68,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class, 'user_id');
     }
+
+    /**
+     * Relasi ke Restaurant (untuk pemilik restaurant dengan role_id = 3)
+     */
+    public function restaurant(): HasOne
+    {
+        return $this->hasOne(Restaurant::class, 'user_id');
+    }
+    
+    /**
+     * Cek apakah user adalah restaurant owner
+     */
+    public function isRestaurantOwner(): bool
+    {
+        return $this->role_id === 3;
+    }
 }

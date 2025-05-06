@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('restaurantName');
             $table->string('restaurantAddress');
             $table->string('restaurantPhone');
+            $table->foreignId('user_id')
+            ->nullable()
+            ->constrained('users')
+            ->onDelete('set null');
             $table->timestamps();
         });
     }
