@@ -96,12 +96,12 @@ class AuthController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $user->update([
-            'username' => $request->username,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-        ]);
+        // $user->update([
+        //     'username' => $request->username,
+        //     'email' => $request->email,
+        //     'phone' => $request->phone,
+        //     'address' => $request->address,
+        // ]);
 
         return redirect('/home')->with('success', 'Profile updated successfully!');
     }
@@ -110,9 +110,9 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         // Hapus akun pengguna
-        $user->delete();
+        // $user->delete();
 
-        $user->orders()->delete();
+        // $user->orders()->delete();
 
         // Logout dan redirect ke halaman utama
         Auth::logout();
