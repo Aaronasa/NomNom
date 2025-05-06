@@ -23,6 +23,8 @@ Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () 
     })->name('VendorDashboard');
 });
 
+
+
 // admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin');
