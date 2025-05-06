@@ -1,6 +1,3 @@
-User.php
-File
-vendor controller
 <?php
 
 namespace App\Http\Controllers;

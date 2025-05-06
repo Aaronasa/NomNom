@@ -110,46 +110,33 @@ class MenuDayController extends Controller
             return $total + $item['foodPrice'] * $item['quantity'];
         }, 0);
 
-        // Create a new order
-        $order = new Order();
-        $order->user_id = Auth::id();
-        $order->orderDate = now();
-        $order->totalPrice = $totalPrice;
-        $order->paymentStatus = '0';
-        $order->save();
+        // Store cart data in session for payment page
+        session()->put('payment_data', [
+            'cart' => $cart,
+            'totalPrice' => $totalPrice
+        ]);
 
-        foreach ($cart as $item) {
-            $order->orderDetailInOrder()->create([
-                'menuDay_id' => $item['menuDayId'],
-                'price' => $item['foodPrice'],
-                'unit' => $item['quantity'],
-                'deliveryStatus_id' => 1,
-            ]);
-        }
-
-        session()->forget('cart');
-
-        return redirect()->route('payment.proses')->with('success', 'Order placed successfully.');
+        // Redirect to payment page instead of creating order immediately
+        return redirect()->route('payment')->with('success', 'Proceed to payment.');
     }
 
     public function paymentfinish()
     {
-        $cart = session()->get('cart', []);
+        $paymentData = session()->get('payment_data', []);
+        $cart = $paymentData['cart'] ?? [];
 
         if (empty($cart)) {
-            return redirect()->back()->with('error', 'no food.');
+            return redirect()->back()->with('error', 'No items to process.');
         }
 
-        $totalPrice = array_reduce($cart, function ($total, $item) {
-            return $total + $item['foodPrice'] * $item['quantity'];
-        }, 0);
+        $totalPrice = $paymentData['totalPrice'] ?? 0;
 
         // Create a new order
         $order = new Order();
         $order->user_id = Auth::id();
         $order->orderDate = now();
         $order->totalPrice = $totalPrice;
-        $order->paymentStatus = '0';
+        $order->paymentStatus = '1'; // Set to paid (1) since payment is completed
         $order->save();
 
         foreach ($cart as $item) {
@@ -161,11 +148,12 @@ class MenuDayController extends Controller
             ]);
         }
 
-        session()->forget('payment.proses');
+        // Clear cart and payment data from session
+        session()->forget(['cart', 'payment_data']);
 
-        return redirect()->route('order.history')->with('success', 'Order placed successfully.');
+        return redirect()->route('order.history')->with('success', 'Payment completed successfully.');
     }
-    
+
     public function removeCart(Request $request)
     {
         $menuDayId = $request->input('menuDayId');
