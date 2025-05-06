@@ -80,14 +80,16 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/order', [MenuDayController::class, 'ViewOrder'])->name('order.view');
     Route::post('/cart/add', [MenuDayController::class, 'addToCart'])->name('cart.add');
     Route::get('/cart', [MenuDayController::class, 'showCart'])->name('cart.show');
+    
     Route::post('/cart/finish', [MenuDayController::class, 'cartfinish'])->name('cart.finish');
     Route::delete('/cart/remove', [MenuDayController::class, 'removeCart'])->name('cart.remove');
 
     Route::get('food/{id}', [MenuDayController::class, 'foodDetail'])->name('food.detail');
 
-    //payment
-    Route::post('/payment', [MenuDayController::class, 'paymentfinish'])->name('payment.proses');
-
+    // Payment routes
+    Route::get('/payment', [PaymentController::class, 'index'])->name('payment');
+    Route::post('/payment/process', [PaymentController::class, 'processPayment'])->name('payment.process');
+    
     Route::get('/detail', [AuthController::class, 'showUpdateForm'])->name('ProfileDetail.update');
     Route::put('/profile/update', [AuthController::class, 'update'])->middleware('auth');
     Route::post('/account/delete', [AuthController::class, 'deleteAccount'])->name('account.delete')->middleware('auth');
@@ -102,5 +104,5 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     // Add these routes to your web.php
     Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
-    Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
+    // Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
 });

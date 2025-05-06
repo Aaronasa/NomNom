@@ -71,28 +71,18 @@
             <!-- Quick Actions -->
             <div class="mt-8">
                 <h2 class="text-xl font-bold text-[#553827] mb-4">Quick Actions</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <a href="{{ route('vendor.products.create') ?? '#' }}"
-                        class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2"
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                        <span class="text-[#553827] font-medium">Add New Product</span>
-                    </a>
-
-                    <a href="{{ route('vendor.products.index') ?? '#' }}"
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 ">
+                    <a href="{{ route('vendor.products.index') }}"
                         class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                         </svg>
-                        <span class="text-[#553827] font-medium">Manage Products</span>
+                        <span class="text-[#553827] font-medium">Manage or Add Products</span>
                     </a>
 
-                    <a href="{{ route('vendor.orders.index') ?? '#' }}"
+                    <a href="{{ route('vendor.orders.index') }}"
                         class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -102,12 +92,15 @@
                         <span class="text-[#553827] font-medium">View Orders</span>
                     </a>
 
-                    {{-- <a href="{{ route('vendor.profile') ?? '#' }}" class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    <a href="{{ route('vendor.profile') }}"
+                        class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                         <span class="text-[#553827] font-medium">Vendor Profile</span>
-                    </a> --}}
+                    </a>
                 </div>
             </div>
 
@@ -183,76 +176,77 @@
                 @endif
             </div>
 
-            <!-- Recent Products -->
+            <!-- Your Products -->
             <div class="mt-8">
                 <h2 class="text-xl font-bold text-[#553827] mb-4">Your Products</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    @if (isset($products) && count($products) > 0)
-                        @foreach ($products as $product)
-                            <div class="bg-white rounded-lg shadow overflow-hidden border border-[#E2CEB1]">
-                                <div class="h-48 bg-gray-200">
-                                    {{-- Check if foodImage is not empty --}}
-                                    @php
-                                        $images = !empty($product->foodImage) ? explode(',', $product->foodImage) : [];
-                                        $firstImage = $images[0] ?? null;
-                                    @endphp
-                                    @if ($firstImage)
-                                        {{-- Corrected image path --}}
-                                        <img src="{{ asset($firstImage) }}" alt="{{ $product->foodName }}"
-                                            class="w-full h-full object-cover">
-                                    @else
-                                        <div class="w-full h-full flex items-center justify-center bg-gray-100">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                            </svg>
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="p-4">
-                                    {{-- Corrected property names --}}
-                                    <h3 class="font-bold text-[#553827] mb-1">{{ $product->foodName }}</h3>
-                                    <p class="text-sm text-gray-600 mb-2">
-                                        {{ Str::limit($product->foodDescription, 60) }}</p>
-                                    <p class="font-bold text-[#553827]">Rp.
-                                        {{ number_format($product->foodPrice, 0, ',', '.') }}</p>
-                                    <div class="mt-4 flex justify-between">
-                                        <a href="{{ route('vendor.products.edit', $product->id) ?? '#' }}"
+                <div class="bg-white rounded-lg shadow overflow-hidden border border-[#E2CEB1]">
+                    <table class="min-w-full divide-y divide-[#E2CEB1]">
+                        <thead class="bg-[#FFF8E6]">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-[#553827] uppercase tracking-wider">
+                                    Image</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-[#553827] uppercase tracking-wider">
+                                    Name</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-[#553827] uppercase tracking-wider">
+                                    Description</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-[#553827] uppercase tracking-wider">
+                                    Price</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-[#553827] uppercase tracking-wider">
+                                    Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @forelse ($products as $product)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @php $firstImage = explode(',', $product->foodImage)[0] ?? null; @endphp
+                                        @if ($firstImage)
+                                            <img src="{{ asset($firstImage) }}" alt="{{ $product->foodName }}"
+                                                class="w-20 h-20 object-cover rounded">
+                                        @else
+                                            <div
+                                                class="w-20 h-20 flex items-center justify-center bg-gray-100 text-gray-500">
+                                                No Image</div>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        {{ $product->foodName }}
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-600">
+                                        {{ $product->foodDescription }}
+                                    </td>
+                                    <td class="px-6 py-4 text-sm font-bold text-[#553827]">
+                                        Rp. {{ number_format($product->foodPrice, 0, ',', '.') }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                                        <a href="{{ route('vendor.products.edit', $product->id) }}"
                                             class="text-[#cfad7d] hover:underline">Edit</a>
-                                        <form action="{{ route('vendor.products.destroy', $product->id) ?? '#' }}"
-                                            method="POST"
+                                        <form action="{{ route('vendor.products.destroy', $product->id) }}"
+                                            method="POST" class="inline"
                                             onsubmit="return confirm('Are you sure you want to delete this product?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
                                                 class="text-red-500 hover:underline">Delete</button>
                                         </form>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    @else
-                        <div class="col-span-4 bg-white p-8 rounded-lg shadow border border-[#E2CEB1] text-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4"
-                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M20 7l-8-4-8 4m16 0v10a2 2 0 01-2 2H4a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4l2-2h4a2 2 0 012 2z" />
-                            </svg>
-                            <p class="text-gray-600 mb-4">You haven't added any products yet.</p>
-                            <a href="{{ route('vendor.products.create') ?? '#' }}"
-                                class="bg-[#cfad7d] text-white px-4 py-2 rounded hover:bg-[#E5CBA6] transition">Add
-                                Your First Product</a>
-                        </div>
-                    @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">You haven't
+                                        added any products yet.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
-                @if (isset($products) && count($products) > 0)
-                    <div class="mt-4 text-right">
-                        <a href="{{ route('vendor.products.index') ?? '#' }}"
-                            class="text-[#cfad7d] hover:underline">Manage all products →</a>
-                    </div>
-                @endif
             </div>
+
         </div>
     </div>
 </x-layout>
