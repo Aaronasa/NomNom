@@ -29,8 +29,17 @@ class UserSeeder extends Seeder
             'password' => bcrypt('admin1'),
             'phone' => '08123456780',
             'address' => 'Jalan Raya 11',
-            'role_id' => 2,
+            'role_id' => 1,
             'remember_token' => Str::random(10),
+        ]);
+        User::create([
+            'username' => 'vendoruser',
+            'email' => 'vendor@example.com',
+            'password' => bcrypt('vendor'),
+            'phone' => '08123456789',
+            'address' => 'Jalan Raya 10',
+            'remember_token' => Str::random(10),
+            'role_id' => 3,
         ]);
 
         User::factory(99)->create();

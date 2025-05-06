@@ -9,15 +9,21 @@ use App\Http\Controllers\ReviewController;
 use App\Models\MenuDay;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [AuthController::class, 'showLoginForm'])->name('welcome');
+Route::get('/', [AuthController::class, 'showLoginForms'])->name('welcome');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/register', function () {
     return view('register');
 })->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+
+Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('VendorDashboard');
+    })->name('VendorDashboard');
+});
 
 // admin
-// Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin');
     Route::get('/', [AdminController::class, 'getAllUsers'])->name('admin.users');
     Route::delete('/{user}', [AdminController::class, 'deleteuser'])->name('admin.deleteuser');
@@ -41,11 +47,11 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
     Route::get('/order-details/{id}/edit', [AdminController::class, 'editOrderDetail'])->name('admin.orderDetails.edit');
     Route::put('/order-details/{id}', [AdminController::class, 'updateOrderDetail'])->name('admin.orderDetails.update');
     Route::delete('/order-details/{id}', [AdminController::class, 'deleteOrderDetail'])->name('admin.orderDetails.delete');
-// });
+});
 
 // User
 // Rute yang memerlukan login (middleware auth)
-// Route::middleware(['auth', 'role:user'])->group(function () {
+Route::middleware(['auth', 'role:user'])->group(function () {
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -80,4 +86,4 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
     Route::get('/map', function () {
         return view('map');
     });
-// });
+});
