@@ -15,7 +15,9 @@ class OrderDetail extends Model
         'unit',
         'deliveryStatus_id',
         'menuDay_id',
-        'order_id'
+        'order_id',
+        'namapenerima',
+        'image'
     ];
 
     public function deliveryStatusInOrderDetail(): BelongsTo{
