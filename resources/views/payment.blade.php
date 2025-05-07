@@ -8,7 +8,7 @@
             <a href="{{ route('cart.show') }}" class="text-3xl">&larr;</a>
             <h1 class="text-xl font-bold">Checkout & Payment</h1>
         </div>
-
+        
         <!-- Delivery Section -->
         <div class="bg-white rounded-xl shadow p-6 mb-6">
             <div class="flex items-center mb-4">
