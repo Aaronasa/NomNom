@@ -18,14 +18,23 @@ Route::get('/register', function () {
 })->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
+Route::middleware(['auth'])->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout.get');
+});
+
 // Vendor Routes
 Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () {
     // Dashboard
     Route::get('/', [VendorController::class, 'dashboard'])->name('VendorDashboard');
     
     // Restaurant Profile
+    Route::get('/restaurant/edit', [VendorController::class, 'editRestaurant'])->name('vendor.restaurant.edit');
+    Route::put('/restaurant/update', [VendorController::class, 'updateRestaurant'])->name('vendor.restaurant.update');
+    Route::get('/restaurant/create', [VendorController::class, 'createRestaurant'])->name('vendor.restaurant.create');
+    Route::post('/restaurant/store', [VendorController::class, 'storeRestaurant'])->name('vendor.restaurant.store');
     Route::get('/profile', [VendorController::class, 'profile'])->name('vendor.profile');
-    Route::post('/profile', [VendorController::class, 'updateProfile'])->name('vendor.profile.update');
+    Route::put('/profile', [VendorController::class, 'updateProfile'])->name('vendor.profile.update');
     
     // Products (Foods)
     Route::get('/products', [VendorController::class, 'productsIndex'])->name('vendor.products.index');
@@ -71,9 +80,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 // User
 // Rute yang memerlukan login (middleware auth)
 Route::middleware(['auth', 'role:user'])->group(function () {
-    // Logout
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // Menu dan pesanan
     Route::get('/home', [MenuDayController::class, 'ViewMenuDay'])->name('home');

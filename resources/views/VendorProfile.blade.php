@@ -132,6 +132,7 @@
                         <div class="px-6 py-8">
                             <form action="{{ route('vendor.profile.update') }}" method="POST">
                                 @csrf
+                                @method('PUT')
                                 
                                 <div class="space-y-6">
                                     <!-- Restaurant Name -->

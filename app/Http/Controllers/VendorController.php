@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\DeliveryStatus;
@@ -23,25 +22,25 @@ class VendorController extends Controller
 
         // Default values in case vendor has no restaurant yet
         $totalProducts = 0;
-        $totalOrders = 0;
-        $totalRevenue = 0;
-        $products = collect();
-        $recentOrders = collect();
+        $totalOrders   = 0;
+        $totalRevenue  = 0;
+        $products      = collect();
+        $recentOrders  = collect();
 
         if ($restaurant) {
             // Get vendor's products using the relationship
-            $products = $restaurant->restaurantToFood()->latest()->get();
+            $products      = $restaurant->restaurantToFood()->latest()->get();
             $totalProducts = $restaurant->restaurantToFood()->count();
 
             // Get vendor's orders
-            $foodIds = $restaurant->restaurantToFood()->pluck('id');
+            $foodIds    = $restaurant->restaurantToFood()->pluck('id');
             $menuDayIds = MenuDay::whereIn('food_id', $foodIds)->pluck('id');
 
             $orderDetails = OrderDetail::whereIn('menuDay_id', $menuDayIds)
                 ->with(['orderInOrderDetail', 'orderInOrderDetail.user', 'menuDayInOrderDetail.foodInMenuDay'])
                 ->get();
 
-            $orderIds = $orderDetails->pluck('order_id')->unique();
+            $orderIds    = $orderDetails->pluck('order_id')->unique();
             $totalOrders = $orderIds->count();
 
             $totalRevenue = $orderDetails->sum(function ($orderDetail) {
@@ -55,7 +54,7 @@ class VendorController extends Controller
                 ->get()
                 ->map(function ($order) {
                     $order->status = $this->determineOrderStatus($order);
-                    $order->total = $order->totalPrice;
+                    $order->total  = $order->totalPrice;
                     return $order;
                 });
         }
@@ -69,7 +68,6 @@ class VendorController extends Controller
         ));
     }
 
-
     /**
      * Determine the status of an order based on its delivery status
      */
@@ -77,22 +75,22 @@ class VendorController extends Controller
     {
         $orderDetails = $order->orderDetailInOrder;
 
-        if (!$order->paymentStatus) {
+        if (! $order->paymentStatus) {
             return 'pending';
         }
 
         $hasProcessing = false;
-        $allCompleted = true;
+        $allCompleted  = true;
 
         foreach ($orderDetails as $detail) {
             $statusId = $detail->deliveryStatus_id;
 
             if ($statusId == 1) { // Waiting for delivery
                 $hasProcessing = true;
-                $allCompleted = false;
+                $allCompleted  = false;
             } else if ($statusId == 2) { // On the delivery way
                 $hasProcessing = true;
-                $allCompleted = false;
+                $allCompleted  = false;
             } else if ($statusId != 3) { // Not received yet
                 $allCompleted = false;
             }
@@ -114,7 +112,7 @@ class VendorController extends Controller
     {
         $restaurant = Auth::user()->restaurant;
 
-        if (!$restaurant) {
+        if (! $restaurant) {
             return redirect()->route('vendor.profile')->with('error', 'Please complete your restaurant profile first.');
         }
 
@@ -122,8 +120,7 @@ class VendorController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-
-        $foodIds = $restaurant->restaurantToFood()->pluck('id');
+        $foodIds    = $restaurant->restaurantToFood()->pluck('id');
         $menuDayIds = MenuDay::whereIn('food_id', $foodIds)->pluck('id');
 
         $orderDetails = OrderDetail::whereIn('menuDay_id', $menuDayIds)
@@ -131,7 +128,7 @@ class VendorController extends Controller
                 'orderInOrderDetail',
                 'orderInOrderDetail.user',
                 'menuDayInOrderDetail.foodInMenuDay',
-                'deliveryStatusInOrderDetail'
+                'deliveryStatusInOrderDetail',
             ])
             ->get();
         return view('vendorManageProducts', compact('products', 'orderDetails'));
@@ -144,7 +141,7 @@ class VendorController extends Controller
     {
         $restaurant = Restaurant::where('id', Auth::user()->restaurant_id)->first();
 
-        if (!$restaurant) {
+        if (! $restaurant) {
             return redirect()->route('vendor.profile')->with('error', 'Please complete your restaurant profile first.');
         }
 
@@ -158,17 +155,17 @@ class VendorController extends Controller
     {
         $restaurant = Restaurant::where('id', Auth::user()->restaurant_id)->first();
 
-        if (!$restaurant) {
+        if (! $restaurant) {
             return redirect()->route('vendor.profile')->with('error', 'Please complete your restaurant profile first.');
         }
 
         // Validate input data
         $validator = Validator::make($request->all(), [
-            'foodName' => 'required|string|max:255',
+            'foodName'        => 'required|string|max:255',
             'foodDescription' => 'nullable|string|max:255',
-            'foodPrice' => 'required|numeric',
-            'foodImages.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'foodDate' => 'nullable|date', // Validate food date
+            'foodPrice'       => 'required|numeric',
+            'foodImages.*'    => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foodDate'        => 'nullable|date', // Validate food date
         ]);
 
         if ($validator->fails()) {
@@ -190,18 +187,18 @@ class VendorController extends Controller
 
         // Create the food item
         $food = Food::create([
-            'foodName' => $request->foodName,
+            'foodName'        => $request->foodName,
             'foodDescription' => $request->foodDescription,
-            'foodPrice' => $request->foodPrice,
-            'foodImage' => $imagePathsString,
-            'restaurant_id' => $restaurant->id,
+            'foodPrice'       => $request->foodPrice,
+            'foodImage'       => $imagePathsString,
+            'restaurant_id'   => $restaurant->id,
         ]);
 
         // If a food date is provided, create a MenuDay
         if ($request->foodDate) {
             MenuDay::create([
                 'foodDate' => $request->foodDate,
-                'food_id' => $food->id,
+                'food_id'  => $food->id,
             ]);
         }
 
@@ -214,7 +211,7 @@ class VendorController extends Controller
     public function editProduct($id)
     {
         $restaurant = Restaurant::where('id', Auth::user()->restaurant_id)->first();
-        $food = Food::where('id', $id)
+        $food       = Food::where('id', $id)
             ->where('restaurant_id', $restaurant->id)
             ->firstOrFail();
 
@@ -229,18 +226,18 @@ class VendorController extends Controller
     public function updateProduct(Request $request, $id)
     {
         $restaurant = Restaurant::where('id', Auth::user()->restaurant_id)->first();
-        $food = Food::where('id', $id)
+        $food       = Food::where('id', $id)
             ->where('restaurant_id', $restaurant->id)
             ->firstOrFail();
 
         // Validate input data
         $validator = Validator::make($request->all(), [
-            'foodName' => 'required|string|max:255',
+            'foodName'        => 'required|string|max:255',
             'foodDescription' => 'nullable|string|max:255',
-            'foodPrice' => 'required|numeric',
-            'foodImage1' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'foodImage2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'foodDate' => 'nullable|date',
+            'foodPrice'       => 'required|numeric',
+            'foodImage1'      => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foodImage2'      => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foodDate'        => 'nullable|date',
         ]);
 
         if ($validator->fails()) {
@@ -262,10 +259,10 @@ class VendorController extends Controller
         }
 
         $food->update([
-            'foodName' => $request->foodName,
+            'foodName'        => $request->foodName,
             'foodDescription' => $request->foodDescription,
-            'foodPrice' => $request->foodPrice,
-            'foodImage' => implode(',', $imagePaths), // Save updated image paths
+            'foodPrice'       => $request->foodPrice,
+            'foodImage'       => implode(',', $imagePaths), // Save updated image paths
         ]);
 
         // Update or create MenuDay if date is provided
@@ -285,7 +282,7 @@ class VendorController extends Controller
     public function destroyProduct($id)
     {
         $restaurant = Restaurant::where('id', Auth::user()->restaurant_id)->first();
-        $food = Food::where('id', $id)
+        $food       = Food::where('id', $id)
             ->where('restaurant_id', $restaurant->id)
             ->firstOrFail();
 
@@ -305,12 +302,12 @@ class VendorController extends Controller
     {
         $restaurant = Restaurant::where('id', Auth::user()->restaurant_id)->first();
 
-        if (!$restaurant) {
+        if (! $restaurant) {
             return redirect()->route('vendor.profile')->with('error', 'Please complete your restaurant profile first.');
         }
 
         // Get vendor's products and associated orders
-        $foodIds = Food::where('restaurant_id', $restaurant->id)->pluck('id');
+        $foodIds    = Food::where('restaurant_id', $restaurant->id)->pluck('id');
         $menuDayIds = MenuDay::whereIn('food_id', $foodIds)->pluck('id');
 
         $orderDetails = OrderDetail::whereIn('menuDay_id', $menuDayIds)
@@ -318,7 +315,7 @@ class VendorController extends Controller
                 'orderInOrderDetail',
                 'orderInOrderDetail.user',
                 'menuDayInOrderDetail.foodInMenuDay',
-                'deliveryStatusInOrderDetail'
+                'deliveryStatusInOrderDetail',
             ])
             ->get();
 
@@ -343,12 +340,12 @@ class VendorController extends Controller
     {
         $restaurant = Restaurant::where('id', Auth::user()->restaurant_id)->first();
 
-        if (!$restaurant) {
+        if (! $restaurant) {
             return redirect()->route('vendor.profile')->with('error', 'Please complete your restaurant profile first.');
         }
 
         // Get vendor's products and associated orders
-        $foodIds = Food::where('restaurant_id', $restaurant->id)->pluck('id');
+        $foodIds    = Food::where('restaurant_id', $restaurant->id)->pluck('id');
         $menuDayIds = MenuDay::whereIn('food_id', $foodIds)->pluck('id');
 
         $order = Order::where('id', $id)
@@ -359,7 +356,7 @@ class VendorController extends Controller
             ->whereIn('menuDay_id', $menuDayIds)
             ->with([
                 'menuDayInOrderDetail.foodInMenuDay',
-                'deliveryStatusInOrderDetail'
+                'deliveryStatusInOrderDetail',
             ])
             ->get();
 
@@ -381,16 +378,16 @@ class VendorController extends Controller
 
         // Verify this order detail is for the vendor's product
         $restaurant = Restaurant::where('id', Auth::user()->restaurant_id)->first();
-        $foodIds = Food::where('restaurant_id', $restaurant->id)->pluck('id');
+        $foodIds    = Food::where('restaurant_id', $restaurant->id)->pluck('id');
         $menuDayIds = MenuDay::whereIn('food_id', $foodIds)->pluck('id');
 
-        if (!$menuDayIds->contains($orderDetail->menuDay_id)) {
+        if (! $menuDayIds->contains($orderDetail->menuDay_id)) {
             return redirect()->route('vendor.orders.index')->with('error', 'You are not authorized to update this order.');
         }
 
         // Update the delivery status
         $orderDetail->update([
-            'deliveryStatus_id' => $request->delivery_status_id
+            'deliveryStatus_id' => $request->delivery_status_id,
         ]);
 
         return redirect()->route('vendor.orders.show', $orderDetail->order_id)
@@ -402,11 +399,8 @@ class VendorController extends Controller
      */
     public function profile()
     {
-        $user = Auth::user();
-        $restaurant = Restaurant::where('id', $user->restaurant_id)->first();
-
-        // Change this line:
-        // return view('vendor.profile', compact('user', 'restaurant'));
+        $user       = Auth::user();
+        $restaurant = $user->restaurant;
 
         // To this:
         return view('vendorProfile', compact('user', 'restaurant'));
@@ -421,13 +415,13 @@ class VendorController extends Controller
 
         // Validate user input
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:15',
-            'address' => 'nullable|string|max:255',
-            'restaurantName' => 'required|string|max:255',
+            'username'          => 'required|string|max:255|unique:users,username,' . $user->id,
+            'email'             => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'phone'             => 'nullable|string|max:15',
+            'address'           => 'nullable|string|max:255',
+            'restaurantName'    => 'required|string|max:255',
             'restaurantAddress' => 'required|string|max:255',
-            'restaurantPhone' => 'required|string|max:15',
+            'restaurantPhone'   => 'required|string|max:15',
         ]);
 
         if ($validator->fails()) {
@@ -435,28 +429,87 @@ class VendorController extends Controller
         }
 
         // Update user details
-        // $user->update([
-        //     'username' => $request->username,
-        //     'email' => $request->email,
-        //     'phone' => $request->phone,
-        //     'address' => $request->address,
-        // ]);
+        $user->update([
+            'username' => $request->username,
+            'email'    => $request->email,
+            'phone'    => $request->phone,
+            'address'  => $request->address,
+        ]);
 
         // Update or create restaurant details
         $restaurant = Restaurant::updateOrCreate(
             ['id' => $user->restaurant_id],
             [
-                'restaurantName' => $request->restaurantName,
+                'restaurantName'    => $request->restaurantName,
                 'restaurantAddress' => $request->restaurantAddress,
-                'restaurantPhone' => $request->restaurantPhone,
+                'restaurantPhone'   => $request->restaurantPhone,
             ]
         );
 
         // Update user's restaurant ID if needed
-        // if (!$user->restaurant_id) {
-        //     $user->update(['restaurant_id' => $restaurant->id]);
-        // }
+        if (! $user->restaurant_id) {
+            $user->update(['restaurant_id' => $restaurant->id]);
+        }
 
         return redirect()->route('vendor.profile')->with('success', 'Profile updated successfully.');
     }
+
+    /**
+     * Show the form to create a restaurant
+     */
+    public function createRestaurant()
+    {
+        return view('AddRestaurant');
+    }
+
+/**
+ * Store the newly created restaurant and link it to the authenticated user
+ */
+    public function storeRestaurant(Request $request)
+    {
+        $user = Auth::user();
+
+        // Validasi input
+        $request->validate([
+            'restaurantName'    => 'required|string|max:255',
+            'restaurantAddress' => 'required|string|max:255',
+            'restaurantPhone'   => 'required|string|max:15',
+        ]);
+
+                                 // Cek apakah user sudah punya restoran
+        if ($user->restaurant) { // Gunakan relasi one-to-one
+            return redirect()->route('vendor.dashboard')->with('error', 'You already have a restaurant.');
+        }
+
+        // Buat restoran baru
+        $restaurant = Restaurant::create([
+            'restaurantName'    => $request->restaurantName,
+            'restaurantAddress' => $request->restaurantAddress,
+            'restaurantPhone'   => $request->restaurantPhone,
+            'user_id'           => $user->id, // Hubungkan user ke restoran
+        ]);
+
+        return redirect()->route('VendorDashboard')->with('success', 'Restaurant created successfully.');
+    }
+
+    public function editRestaurant()
+    {
+        $restaurant = Auth::user()->restaurant;
+        return view('vendor.restaurant.edit', compact('restaurant'));
+    }
+
+    public function updateRestaurant(Request $request)
+    {
+        $restaurant = Auth::user()->restaurant;
+
+        $request->validate([
+            'restaurantName'    => 'required|string|max:255',
+            'restaurantAddress' => 'required|string',
+            'restaurantPhone'   => 'required|string|max:15',
+        ]);
+
+        $restaurant->update($request->all());
+        return redirect()->route('vendor.profile')->with('success', 'Restaurant updated.');
+    }
+
 }

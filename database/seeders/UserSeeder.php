@@ -37,9 +37,9 @@ class UserSeeder extends Seeder
             'email' => 'vendor@example.com',
             'password' => bcrypt('vendor'),
             'phone' => '08123456789',
-            'address' => 'Jalan Raya 10',
-            'remember_token' => Str::random(10),
+            'address' => 'Jalan Raya 12',
             'role_id' => 3,
+            'remember_token' => Str::random(10),
         ]);
 
         User::factory(99)->create();
