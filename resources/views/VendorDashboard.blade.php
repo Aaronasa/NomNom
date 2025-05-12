@@ -1,18 +1,6 @@
 <x-layout>
+    <x-vendorNavBar />
     <div class="w-full min-h-screen bg-[#FFF8E6] font-[Instrument Sans]">
-        <!-- Vendor Dashboard Header -->
-        <div class="bg-white shadow-md">
-            <div class="container mx-auto px-4 py-6">
-                <div class="flex justify-between items-center">
-                    <h1 class="text-2xl font-bold text-[#553827]">Vendor Dashboard</h1>
-                    <div class="flex items-center space-x-4">
-                        <span class="text-gray-600">{{ Auth::user()->username }}</span>
-                        <a href="{{ route('logout') }}"
-                            class="bg-[#cfad7d] text-white px-4 py-2 rounded hover:bg-[#E5CBA6] transition">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Dashboard Content -->
         <div class="container mx-auto px-4 py-8">
@@ -72,7 +60,7 @@
             <div class="mt-8">
                 <h2 class="text-xl font-bold text-[#553827] mb-4">Quick Actions</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 ">
-                    <a href="{{ route('vendor.products.index') }}"
+                    <a href="{{ route('vendor.orders.index') }}"
                         class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -82,7 +70,7 @@
                         <span class="text-[#553827] font-medium">Manage or Add Products</span>
                     </a>
 
-                    <a href="{{ route('vendor.orders.index') }}"
+                    <a href="{{ route('vendor.products.index') }}"
                         class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">

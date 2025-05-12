@@ -145,7 +145,8 @@ class VendorController extends Controller
             return redirect()->route('vendor.profile')->with('error', 'Please complete your restaurant profile first.');
         }
 
-        return view('vendor.products.create', compact('restaurant'));
+        // This should return vendorAddProduct.blade.php
+        return view('vendorAddProduct', compact('restaurant'));
     }
 
     /**
@@ -453,63 +454,4 @@ class VendorController extends Controller
 
         return redirect()->route('vendor.profile')->with('success', 'Profile updated successfully.');
     }
-
-    /**
-     * Show the form to create a restaurant
-     */
-    public function createRestaurant()
-    {
-        return view('AddRestaurant');
-    }
-
-/**
- * Store the newly created restaurant and link it to the authenticated user
- */
-    public function storeRestaurant(Request $request)
-    {
-        $user = Auth::user();
-
-        // Validasi input
-        $request->validate([
-            'restaurantName'    => 'required|string|max:255',
-            'restaurantAddress' => 'required|string|max:255',
-            'restaurantPhone'   => 'required|string|max:15',
-        ]);
-
-                                 // Cek apakah user sudah punya restoran
-        if ($user->restaurant) { // Gunakan relasi one-to-one
-            return redirect()->route('vendor.dashboard')->with('error', 'You already have a restaurant.');
-        }
-
-        // Buat restoran baru
-        $restaurant = Restaurant::create([
-            'restaurantName'    => $request->restaurantName,
-            'restaurantAddress' => $request->restaurantAddress,
-            'restaurantPhone'   => $request->restaurantPhone,
-            'user_id'           => $user->id, // Hubungkan user ke restoran
-        ]);
-
-        return redirect()->route('VendorDashboard')->with('success', 'Restaurant created successfully.');
-    }
-
-    public function editRestaurant()
-    {
-        $restaurant = Auth::user()->restaurant;
-        return view('vendor.restaurant.edit', compact('restaurant'));
-    }
-
-    public function updateRestaurant(Request $request)
-    {
-        $restaurant = Auth::user()->restaurant;
-
-        $request->validate([
-            'restaurantName'    => 'required|string|max:255',
-            'restaurantAddress' => 'required|string',
-            'restaurantPhone'   => 'required|string|max:15',
-        ]);
-
-        $restaurant->update($request->all());
-        return redirect()->route('vendor.profile')->with('success', 'Restaurant updated.');
-    }
-
 }

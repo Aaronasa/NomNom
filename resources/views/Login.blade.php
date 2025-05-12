@@ -4,7 +4,7 @@
             <div class="sm:mx-auto sm:w-full sm:max-w-sm">
                 <img class="mx-auto h-18 w-auto" src="image/LogoDEI.png" alt="Logo">
             </div>
-            <div class="w-full bg-white rounded-lg shadow border border-[#E2CEB1] md:mt-2 sm:max-w-md xl:p-0">
+            <div class="w-full bg-white rounded-lg shadow border border-[#E2CEB1] md:mt-5 sm:max-w-md xl:p-0">
                 <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                     <h1 class="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl">
                         Login to Your Account
