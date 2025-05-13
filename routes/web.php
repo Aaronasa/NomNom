@@ -93,8 +93,12 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('food/{id}', [MenuDayController::class, 'foodDetail'])->name('food.detail');
 
     // Payment routes
-    Route::get('/payment', [PaymentController::class, 'index'])->name('payment');
+    // Route::get('/payment', [PaymentController::class, 'index'])->name('payment');
     Route::post('/payment/process', [PaymentController::class, 'processPayment'])->name('payment.process');
+
+Route::get('/payment', [MenuDayController::class, 'showPayment'])->name('payment');
+Route::get('/payment/finish', [MenuDayController::class, 'paymentfinish'])->name('payment.finish');
+Route::post('/payment/callback', [MenuDayController::class, 'paymentCallback'])->name('payment.callback');
     
     Route::get('/detail', [AuthController::class, 'showUpdateForm'])->name('ProfileDetail.update');
     Route::put('/profile/update', [AuthController::class, 'update'])->middleware('auth');

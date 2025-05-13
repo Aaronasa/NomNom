@@ -1,3 +1,4 @@
+```blade
 <x-layout>
     <x-navigation />
 
@@ -86,74 +87,67 @@
             </div>
         </div>
 
-        <!-- QR Section -->
-        <div class="flex items-center justify-between bg-white px-6 py-4 shadow rounded-xl mb-6">
-            <div class="flex items-center space-x-4">
-                <img src="{{ asset('image/QRDANA.jpg') }}" alt="QRIS" class="w-16" />
-                <p class="font-bold text-lg">Rp. {{ number_format($grandTotal, 0, ',', '.') }}</p>
-            </div>
-            <button class="bg-[#D7C5A9] text-white px-4 py-2 rounded-full" id="show-qr-btn">Show QR</button>
+        <!-- Midtrans Payment Button -->
+        <div class="bg-white rounded-xl shadow p-6 mb-6">
+            <h2 class="font-bold mb-4">Payment Method</h2>
+            <button id="pay-button" class="checkout-btn bg-[#D7C5A9] text-white px-4 py-3 rounded-xl w-full font-bold">
+                Complete Payment
+            </button>
+            <div id="snap-container" class="mt-4"></div>
         </div>
-        
-        <!-- Payment Button -->
-        {{-- <div class="cart-footer">
-            <form action="{{ route('payment.process') }}" method="POST">
-                @csrf
-                <button type="submit" class="checkout-btn bg-[#D7C5A9] text-white px-4 py-3 rounded-xl w-full font-bold">
-                    Complete Payment
-                </button>
-            </form>
-        </div> --}}
 
-    </div>
-
-    <!-- QR Modal (Hidden by default) -->
-    <div id="qr-modal" class="fixed mt-20 inset-0 flex items-center justify-center hidden" style="background-color: rgba(229, 231, 235, 0.5);">
-        <div class="bg-white p-6 rounded-xl max-w-md w-full">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="font-bold text-lg">Scan QR Code to Pay</h3>
-                <button id="close-qr-modal" class="text-gray-500 hover:text-gray-700">&times;</button>
-            </div>
-            <div class="flex justify-center mb-4">
-                <!-- Placeholder QR Code - in a real app, this would be generated -->
-                <div class="flex justify-center my-4">
-                    <img src="{{ asset('image/QRDANA.jpg') }}" alt="QR BCA" class="w-64 h-64 object-contain rounded-lg shadow" />
-                </div>
-            </div>
-            <p class="text-center font-bold mb-2">Rp. {{ number_format($grandTotal, 0, ',', '.') }}</p>
-            <p class="text-center text-sm text-gray-500 mb-4">Scan with your preferred payment app</p>
-            <div class="cart-footer">
-                <form action="{{ route('payment.process') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="checkout-btn bg-[#D7C5A9] text-white px-4 py-3 rounded-xl w-full font-bold">
-                        Complete Payment
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-
+    <!-- Midtrans Script -->
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.clientKey') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Original QR Modal code
             const showQrBtn = document.getElementById('show-qr-btn');
             const qrModal = document.getElementById('qr-modal');
             const closeQrModal = document.getElementById('close-qr-modal');
-            const paymentDone = document.getElementById('payment-done');
             
-            showQrBtn.addEventListener('click', function() {
-                qrModal.classList.remove('hidden');
-            });
+            if (showQrBtn) {
+                showQrBtn.addEventListener('click', function() {
+                    qrModal.classList.remove('hidden');
+                });
+            }
             
-            closeQrModal.addEventListener('click', function() {
-                qrModal.classList.add('hidden');
-            });
+            if (closeQrModal) {
+                closeQrModal.addEventListener('click', function() {
+                    qrModal.classList.add('hidden');
+                });
+            }
             
-            paymentDone.addEventListener('click', function() {
-                // Submit the payment form
-                document.querySelector('form[action="{{ route('payment.process') }}"]').submit();
+            // Midtrans integration
+            const payButton = document.getElementById('pay-button');
+            payButton.addEventListener('click', function () {
+                // Trigger snap popup
+                window.snap.embed('{{ $snapToken }}', {
+                    embedId: 'snap-container',
+                    onSuccess: function (result) {
+                        /* You may add your own implementation here */
+                        alert("Payment successful!");
+                        console.log(result);
+                        window.location.href = "{{ route('payment.finish') }}";
+                    },
+                    onPending: function (result) {
+                        /* You may add your own implementation here */
+                        alert("Waiting for your payment!");
+                        console.log(result);
+                    },
+                    onError: function (result) {
+                        /* You may add your own implementation here */
+                        alert("Payment failed!");
+                        console.log(result);
+                    },
+                    onClose: function () {
+                        /* You may add your own implementation here */
+                        alert('You closed the popup without finishing the payment');
+                    }
+                });
             });
         });
     </script>
 
     <x-footer />
 </x-layout>
+```

@@ -20,9 +20,8 @@
 
                         <!-- Form Content -->
                         <div class="px-6 py-8">
-                            <form action="{{ url('/profile/update') }}" method="POST">
+                            <form action="{{ url('/profile/update') }}" method="PUT">
                                 @csrf
-                                @method('PUT')
                                 
                                 <div class="space-y-6">
                                     <!-- Username -->
@@ -130,7 +129,7 @@
 
                         <!-- Form Content -->
                         <div class="px-6 py-8">
-                            <form action="{{ route('vendor.profile.update') }}" method="POST">
+                            <form action="{{ route('vendor.profile.update') }}" method="PUT">
                                 @csrf
                                 
                                 <div class="space-y-6">
