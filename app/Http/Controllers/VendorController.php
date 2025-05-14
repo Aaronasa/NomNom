@@ -410,48 +410,113 @@ class VendorController extends Controller
     /**
      * Update the vendor's profile and restaurant information
      */
-    public function updateProfile(Request $request)
+
+public function updateProfile(Request $request)
+{
+    $user = Auth::user();
+
+    $validated = $request->validate([
+        'username' => 'required|string|max:255|unique:users,username,'.$user->id,
+        'email' => 'required|email|unique:users,email,'.$user->id,
+        'phone' => 'nullable|string|max:15',
+        'address' => 'nullable|string|max:255'
+    ]);
+
+    $user->update($validated);
+
+    return redirect()->route('vendor.profile')->with('success', 'Profile updated successfully');
+}
+
+    /**
+     * Show form for creating a new restaurant
+     */
+
+public function createRestaurant()
+{
+    $user = Auth::user();
+    
+    if ($user->restaurant) {
+        return redirect()->route('vendor.profile')->with('error', 'You already have a restaurant.');
+    }
+    
+    return view('AddRestaurant');
+}
+    
+    /**
+     * Store a newly created restaurant in the database
+     */
+public function storeRestaurant(Request $request)
+{
+    $user = Auth::user();
+    
+    if ($user->restaurant) {
+        return redirect()->route('vendor.profile')->with('error', 'You already have a restaurant.');
+    }
+    
+    $validator = Validator::make($request->all(), [
+        'restaurantName'    => 'required|string|max:255',
+        'restaurantAddress' => 'required|string|max:255',
+        'restaurantPhone'   => 'required|string|max:15',
+    ]);
+    
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
+    }
+    
+    $restaurant = Restaurant::create([
+        'restaurantName'    => $request->restaurantName,
+        'restaurantAddress' => $request->restaurantAddress,
+        'restaurantPhone'   => $request->restaurantPhone,
+        'user_id'           => $user->id, // Set the user_id here
+    ]);
+    
+    return redirect()->route('VendorDashboard')->with('success', 'Restaurant created successfully.');
+}
+    
+    /**
+     * Show form for editing the restaurant
+     */
+    public function editRestaurant()
     {
         $user = Auth::user();
-
-        // Validate user input
-        $validator = Validator::make($request->all(), [
-            'username'          => 'required|string|max:255|unique:users,username,' . $user->id,
-            'email'             => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'phone'             => 'nullable|string|max:15',
-            'address'           => 'nullable|string|max:255',
-            'restaurantName'    => 'required|string|max:255',
-            'restaurantAddress' => 'required|string|max:255',
-            'restaurantPhone'   => 'required|string|max:15',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+        $restaurant = $user->restaurant;
+        
+        if (!$restaurant) {
+            return redirect()->route('vendor.restaurant.create')->with('error', 'You need to create a restaurant first.');
         }
-
-        // Update user details
-        $user->update([
-            'username' => $request->username,
-            'email'    => $request->email,
-            'phone'    => $request->phone,
-            'address'  => $request->address,
-        ]);
-
-        // Update or create restaurant details
-        $restaurant = Restaurant::updateOrCreate(
-            ['id' => $user->restaurant_id],
-            [
-                'restaurantName'    => $request->restaurantName,
-                'restaurantAddress' => $request->restaurantAddress,
-                'restaurantPhone'   => $request->restaurantPhone,
-            ]
-        );
-
-        // Update user's restaurant ID if needed
-        if (! $user->restaurant_id) {
-            $user->update(['restaurant_id' => $restaurant->id]);
-        }
-
-        return redirect()->route('vendor.profile')->with('success', 'Profile updated successfully.');
+        
+        return view('EditRestaurant', compact('restaurant'));
     }
+    
+
+
+public function updateRestaurant(Request $request)
+{
+    $user = Auth::user();
+    $restaurant = $user->restaurant;
+
+    if (!$restaurant) {
+        return redirect()->route('vendor.restaurant.create');
+    }
+
+    // Validate restaurant fields
+    $validator = Validator::make($request->all(), [
+        'restaurantName'    => 'required|string|max:255',
+        'restaurantAddress' => 'required|string|max:255',
+        'restaurantPhone'   => 'required|string|max:15',
+    ]);
+
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
+    }
+
+    // Update restaurant
+    $restaurant->update([
+        'restaurantName'    => $request->restaurantName,
+        'restaurantAddress' => $request->restaurantAddress,
+        'restaurantPhone'   => $request->restaurantPhone,
+    ]);
+
+    return redirect()->route('vendor.profile')->with('success', 'Restaurant updated successfully.');
+}
 }

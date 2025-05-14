@@ -47,8 +47,7 @@ Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () 
     // Orders
     Route::get('/orders', [VendorController::class, 'ordersIndex'])->name('vendor.orders.index');
     Route::get('/orders/{id}', [VendorController::class, 'showOrder'])->name('vendor.orders.show');
-    Route::post('/orders/status/{id}', [VendorController::class, 'updateOrderStatus'])->name('vendor.orders.updateStatus');
-});
+    Route::post('/orders/status/{id}', [VendorController::class, 'updateOrderStatus'])->name('vendor.orders.updateStatus');});
 
 // admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {

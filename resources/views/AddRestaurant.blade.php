@@ -14,7 +14,6 @@
                         <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
                             <form action="{{ route('vendor.restaurant.store') }}" method="POST">
                                 @csrf
-                                @method('PUT') 
                                 <!-- Restaurant Name -->
                                 <div class="relative w-full mb-3">
                                     <label for="restaurantName" class="block uppercase text-[#553827] text-xs font-bold mb-2">
