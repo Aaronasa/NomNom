@@ -86,7 +86,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/order', [MenuDayController::class, 'ViewOrder'])->name('order.view');
     Route::post('/cart/add', [MenuDayController::class, 'addToCart'])->name('cart.add');
     Route::get('/cart', [MenuDayController::class, 'showCart'])->name('cart.show');
-    
+    Route::post('/cart/update', [MenuDayController::class, 'update'])->name('cart.update');
     Route::post('/cart/finish', [MenuDayController::class, 'cartfinish'])->name('cart.finish');
     Route::delete('/cart/remove', [MenuDayController::class, 'removeCart'])->name('cart.remove');
 

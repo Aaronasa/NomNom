@@ -141,6 +141,45 @@ class MenuDayController extends Controller
         return redirect()->back()->with('success', 'Item removed from cart successfully.');
     }
 
+public function update(Request $request)
+{
+    $cart = session()->get('cart', []);
+    $menuDayId = $request->input('menuDayId');
+    $quantity = (int)$request->input('quantity');
+    
+    // Find the item in the cart array
+    $updated = false;
+    foreach ($cart as $index => $item) {
+        if ($item['menuDayId'] == $menuDayId) {
+            // Update quantity
+            $cart[$index]['quantity'] = $quantity;
+            $updated = true;
+            
+            // Calculate item total - ensure it's an integer
+            $itemTotal = intval($cart[$index]['foodPrice'] * $quantity);
+            break;
+        }
+    }
+    
+    if (!$updated) {
+        return response()->json(['success' => false, 'message' => 'Item not found in cart'], 404);
+    }
+    
+    // Save updated cart
+    session()->put('cart', $cart);
+    
+    // Calculate new subtotal - ensure it's an integer
+    $subtotal = intval(array_reduce($cart, function ($total, $item) {
+        return $total + ($item['foodPrice'] * $item['quantity']);
+    }, 0));
+    
+    return response()->json([
+        'success' => true,
+        'itemTotal' => $itemTotal,
+        'subtotal' => $subtotal
+    ]);
+}
+
     public function showPayment()
     {
         $paymentData = session()->get('payment_data', []);
