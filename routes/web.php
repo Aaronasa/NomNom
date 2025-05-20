@@ -39,6 +39,8 @@ Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () 
     Route::get('/orders', [VendorController::class, 'ordersIndex'])->name('vendor.orders.index');
     Route::get('/orders/{id}', [VendorController::class, 'showOrder'])->name('vendor.orders.show');
     Route::post('/orders/status/{id}', [VendorController::class, 'updateOrderStatus'])->name('vendor.orders.updateStatus');
+    Route::get('/orders/detail/{id}/edit', [VendorController::class, 'editOrderDetail'])->name('vendor.orders.editDetail');
+    Route::put('/orders/detail/{id}', [VendorController::class, 'updateOrderDetail'])->name('vendor.orders.updateDetail');
 
     Route::post('/vendor/orders/{orderDetailId}/upload-proof', [VendorController::class, 'uploadProof'])->name('vendor.orders.uploadProof');
 
@@ -66,8 +68,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::delete('/foods/{id}', [AdminController::class, 'deleteFood'])->name('admin.foods.delete');
 
     Route::get('/order-details', [AdminController::class, 'getAllOrderDetails'])->name('admin.orderDetails');
-    Route::get('/order-details/{id}/edit', [AdminController::class, 'editOrderDetail'])->name('admin.orderDetails.edit');
-    Route::put('/order-details/{id}', [AdminController::class, 'updateOrderDetail'])->name('admin.orderDetails.update');
+    // Route::get('/order-details/{id}/edit', [AdminController::class, 'editOrderDetail'])->name('admin.orderDetails.edit');
+    // Route::put('/order-details/{id}', [AdminController::class, 'updateOrderDetail'])->name('admin.orderDetails.update');
     Route::delete('/order-details/{id}', [AdminController::class, 'deleteOrderDetail'])->name('admin.orderDetails.delete');
 });
 

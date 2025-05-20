@@ -63,23 +63,17 @@
                                             {{ number_format($item->price, 0, ',', '.') }}</span>
                                     </div>
                                 </div>
-                                @php
-                                    // $filename =  $item->id . '.jpg';
-                                    $filename = '17.jpg'; 
+                               @php
+                                    $filename = $item->id . '.jpg';
                                     $proofPath = public_path('image/proofs/' . $filename);
                                 @endphp
 
                                 @if (file_exists($proofPath))
-                                    <div class="mt-2">
-                                        <p class="text-gray-600 text-sm">Proof of Delivery:</p>
-                                        <img src="{{ asset('image/proofs/' . $filename) }}" alt="Proof of Delivery"
-                                            class="w-32 h-32 object-cover rounded mt-1">
-                                    </div>
+                                    <img src="{{ asset('image/proofs/' . $filename) }}" />
                                 @else
-                                    <div class="mt-2">
-                                        <p class="text-sm text-gray-500 italic">No proof uploaded yet.</p>
-                                    </div>
+                                    <p>No proof uploaded yet.</p>
                                 @endif
+
                             @endforeach
 
                             <!-- Order Details -->

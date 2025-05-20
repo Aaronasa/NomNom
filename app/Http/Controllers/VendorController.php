@@ -473,4 +473,59 @@ class VendorController extends Controller
 
         return redirect()->back()->with('success', 'Proof uploaded successfully.');
     }
+
+
+    // Add these two methods inside VendorController
+
+public function editOrderDetail($id)
+{
+    $restaurant = Restaurant::where('id', Auth::user()->restaurant_id)->first();
+    $orderDetail = OrderDetail::with(['menuDayInOrderDetail.foodInMenuDay', 'orderInOrderDetail.user', 'deliveryStatusInOrderDetail'])
+        ->findOrFail($id);
+
+    $foodIds = Food::where('restaurant_id', $restaurant->id)->pluck('id');
+    $menuDayIds = MenuDay::whereIn('food_id', $foodIds)->pluck('id');
+
+    if (!$menuDayIds->contains($orderDetail->menuDay_id)) {
+        return redirect()->route('vendor.orders.index')->with('error', 'Unauthorized access to this order detail.');
+    }
+
+    $deliveryStatuses = DeliveryStatus::all();
+
+    return view('vendor.orders.edit', compact('orderDetail', 'deliveryStatuses'));
+}
+
+public function updateOrderDetail(Request $request, $id)
+{
+    $orderDetail = OrderDetail::findOrFail($id);
+
+    $restaurant = Restaurant::where('id', Auth::user()->restaurant_id)->first();
+    $foodIds = Food::where('restaurant_id', $restaurant->id)->pluck('id');
+    $menuDayIds = MenuDay::whereIn('food_id', $foodIds)->pluck('id');
+
+    if (!$menuDayIds->contains($orderDetail->menuDay_id)) {
+        return redirect()->route('vendor.orders.index')->with('error', 'Unauthorized to update this order.');
+    }
+
+    $request->validate([
+        'price' => 'required|numeric',
+        'unit' => 'required|integer',
+        'delivery_status' => 'required|exists:delivery_statuses,statusName',
+        'proof_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    ]);
+
+    $orderDetail->update([
+        'price' => $request->price,
+        'unit' => $request->unit,
+        'deliveryStatus_id' => DeliveryStatus::where('statusName', $request->delivery_status)->value('id'),
+    ]);
+
+    // Upload proof image if provided
+    if ($request->hasFile('proof_image')) {
+        $request->file('proof_image')->move(public_path('image/proofs'), $orderDetail->id . '.jpg');
+    }
+
+    return redirect()->route('vendor.orders.index')->with('success', 'Order detail updated successfully.');
+}
+
 }
