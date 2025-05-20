@@ -480,8 +480,16 @@ class VendorController extends Controller
 public function editOrderDetail($id)
 {
     $restaurant = Restaurant::where('id', Auth::user()->restaurant_id)->first();
-    $orderDetail = OrderDetail::with(['menuDayInOrderDetail.foodInMenuDay', 'orderInOrderDetail.user', 'deliveryStatusInOrderDetail'])
-        ->findOrFail($id);
+
+    if (!$restaurant) {
+        return redirect()->route('vendor.profile')->with('error', 'Please complete your restaurant profile first.');
+    }
+
+    $orderDetail = OrderDetail::with([
+        'menuDayInOrderDetail.foodInMenuDay',
+        'orderInOrderDetail.user',
+        'deliveryStatusInOrderDetail'
+    ])->findOrFail($id);
 
     $foodIds = Food::where('restaurant_id', $restaurant->id)->pluck('id');
     $menuDayIds = MenuDay::whereIn('food_id', $foodIds)->pluck('id');
@@ -492,8 +500,9 @@ public function editOrderDetail($id)
 
     $deliveryStatuses = DeliveryStatus::all();
 
-    return view('vendor.orders.edit', compact('orderDetail', 'deliveryStatuses'));
+    return view('edit', compact('orderDetail', 'deliveryStatuses'));
 }
+
 
 public function updateOrderDetail(Request $request, $id)
 {
