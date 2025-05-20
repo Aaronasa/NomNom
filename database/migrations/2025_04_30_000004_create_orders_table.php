@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamp('orderDate');
             $table->decimal('totalPrice');
-            $table->string('paymentStatus');
-            // $table->dropForeign(['user_id']);
+            $table->enum('paymentStatus', ['UnPaid', 'Paid']);
             $table->foreignId('user_id')
             ->constrained('users')
             ->index('user_order_id')

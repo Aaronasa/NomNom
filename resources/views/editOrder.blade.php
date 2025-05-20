@@ -58,6 +58,13 @@
                         </option>
                     </select>
                 </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Proof of Delivery (optional)</label>
+                    <button type="button"
+                        class="mt-2 bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600">
+                        Upload Image
+                    </button>
+                </div>
 
                 <!-- User (Read-only) -->
                 <div class="mb-4">

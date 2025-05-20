@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -18,7 +17,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required',
         ]);
 
@@ -56,29 +55,40 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:255|unique:users,username',
-            'email' => 'required|string|email|max:255|unique:users,email',
+            'email'    => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8',
-            'phone' => 'required|string|max:15',
-            'address' => 'required|string|max:255',
-            'role_id' => 'required|in:2,3',
+            'phone'    => 'required|string|max:15',
+            'address'  => 'required|string|max:255',
+            'role_id'  => 'required|in:2,3',
         ]);
-
+    
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-
-        User::create([
+    
+        // SIMPAN USER KE VARIABEL
+        $user = User::create([
             'username' => $request->username,
-            'email' => $request->email,
+            'email'    => $request->email,
             'password' => Hash::make($request->password),
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'role_id' => $request->role_id, 
+            'phone'    => $request->phone,
+            'address'  => $request->address,
+            'role_id'  => $request->role_id,
         ]);
-
+    
+        // Login user setelah registrasi
+        Auth::login($user);
+    
+        if ($user->role_id == 3) {
+            // Redirect ke halaman AddRestaurant untuk vendor
+            return redirect()->route('vendor.restaurant.create');
+        }
+    
+        // Redirect ke halaman login atau dashboard untuk user biasa
         return redirect('/')->with('success', 'Registration successful! Please login.');
     }
     
+
     public function showUpdateForm()
     {
         $user = Auth::user();
@@ -91,21 +101,21 @@ class AuthController extends Controller
 
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:15',
-            'address' => 'nullable|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'phone'    => 'nullable|string|max:15',
+            'address'  => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // $user->update([
-        //     'username' => $request->username,
-        //     'email' => $request->email,
-        //     'phone' => $request->phone,
-        //     'address' => $request->address,
-        // ]);
+        $user->update([
+            'username' => $request->username,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+        ]);
 
         return redirect('/home')->with('success', 'Profile updated successfully!');
     }
@@ -114,9 +124,9 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         // Hapus akun pengguna
-        // $user->delete();
+        $user->delete();
 
-        // $user->orders()->delete();
+        $user->orders()->delete();
 
         // Logout dan redirect ke halaman utama
         Auth::logout();

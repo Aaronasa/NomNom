@@ -18,17 +18,33 @@
                     <div class="mb-8">
                         <!-- Payment Status Badge -->
                         <div class="flex items-center mb-2">
-                            @if ($order->paymentStatus == 1)
+                            @if ($order->paymentStatus == 'Paid')
                                 <div class="bg-green-200 text-green-800 rounded-full px-4 py-1 text-sm font-medium">
-                                    Done
+                                    Paid
                                 </div>
-                            @elseif ($order->paymentStatus == 0)
+                            @elseif ($order->paymentStatus == 'Unpaid')
                                 <div class="bg-red-200 text-red-800 rounded-full px-4 py-1 text-sm font-medium">
                                     Unpaid
                                 </div>
+                            @elseif ($order->paymentStatus == 'Pending')
+                                <div class="bg-yellow-200 text-yellow-800 rounded-full px-4 py-1 text-sm font-medium">
+                                    Pending
+                                </div>
+                            @elseif ($order->paymentStatus == 'Canceled')
+                                <div class="bg-gray-200 text-gray-800 rounded-full px-4 py-1 text-sm font-medium">
+                                    Canceled
+                                </div>
+                            @elseif ($order->paymentStatus == 'Expired')
+                                <div class="bg-gray-200 text-gray-800 rounded-full px-4 py-1 text-sm font-medium">
+                                    Expired
+                                </div>
+                            @elseif ($order->paymentStatus == 'Denied')
+                                <div class="bg-red-200 text-red-800 rounded-full px-4 py-1 text-sm font-medium">
+                                    Denied
+                                </div>
                             @else
                                 <div class="bg-gray-200 text-gray-800 rounded-full px-4 py-1 text-sm font-medium">
-                                    Unknown
+                                    {{ $order->paymentStatus }}
                                 </div>
                             @endif
                         </div>

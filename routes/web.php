@@ -18,15 +18,24 @@ Route::get('/register', function () {
 })->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
+Route::middleware(['auth'])->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout.get');
+});
+
 // Vendor Routes
 Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () {
     // Dashboard
-    Route::get('/dashboard', [VendorController::class, 'dashboard'])->name('VendorDashboard');
-
+    Route::get('/', [VendorController::class, 'dashboard'])->name('VendorDashboard');
+    
     // Restaurant Profile
+    Route::get('/restaurant/edit', [VendorController::class, 'editRestaurant'])->name('vendor.restaurant.edit');
+    Route::put('/restaurant/update', [VendorController::class, 'updateRestaurant'])->name('vendor.restaurant.update');
+    Route::get('/restaurant/create', [VendorController::class, 'createRestaurant'])->name('vendor.restaurant.create');
+    Route::post('/restaurant/store', [VendorController::class, 'storeRestaurant'])->name('vendor.restaurant.store');
     Route::get('/profile', [VendorController::class, 'profile'])->name('vendor.profile');
-    Route::post('/profile', [VendorController::class, 'updateProfile'])->name('vendor.profile.update');
-
+    Route::put('/profile', [VendorController::class, 'updateProfile'])->name('vendor.profile.update');
+    
     // Products (Foods)
     Route::get('/products', [VendorController::class, 'productsIndex'])->name('vendor.products.index');
     Route::get('/products/create', [VendorController::class, 'createProduct'])->name('vendor.products.create');
@@ -34,7 +43,7 @@ Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () 
     Route::get('/products/{id}/edit', [VendorController::class, 'editProduct'])->name('vendor.products.edit');
     Route::put('/products/{id}', [VendorController::class, 'updateProduct'])->name('vendor.products.update');
     Route::delete('/products/{id}', [VendorController::class, 'destroyProduct'])->name('vendor.products.destroy');
-
+    
     // Orders
     Route::get('/orders', [VendorController::class, 'ordersIndex'])->name('vendor.orders.index');
     Route::get('/orders/{id}', [VendorController::class, 'showOrder'])->name('vendor.orders.show');
@@ -76,25 +85,26 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 // User
 // Rute yang memerlukan login (middleware auth)
 Route::middleware(['auth', 'role:user'])->group(function () {
-    // Logout
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // Menu dan pesanan
     Route::get('/home', [MenuDayController::class, 'ViewMenuDay'])->name('home');
     Route::get('/order', [MenuDayController::class, 'ViewOrder'])->name('order.view');
     Route::post('/cart/add', [MenuDayController::class, 'addToCart'])->name('cart.add');
     Route::get('/cart', [MenuDayController::class, 'showCart'])->name('cart.show');
-
+    Route::post('/cart/update', [MenuDayController::class, 'update'])->name('cart.update');
     Route::post('/cart/finish', [MenuDayController::class, 'cartfinish'])->name('cart.finish');
     Route::delete('/cart/remove', [MenuDayController::class, 'removeCart'])->name('cart.remove');
 
     Route::get('food/{id}', [MenuDayController::class, 'foodDetail'])->name('food.detail');
 
     // Payment routes
-    Route::get('/payment', [PaymentController::class, 'index'])->name('payment');
+    // Route::get('/payment', [PaymentController::class, 'index'])->name('payment');
     Route::post('/payment/process', [PaymentController::class, 'processPayment'])->name('payment.process');
 
+Route::get('/payment', [MenuDayController::class, 'showPayment'])->name('payment');
+Route::get('/payment/finish', [MenuDayController::class, 'paymentfinish'])->name('payment.finish');
+Route::post('/payment/callback', [MenuDayController::class, 'paymentCallback'])->name('payment.callback');
+    
     Route::get('/detail', [AuthController::class, 'showUpdateForm'])->name('ProfileDetail.update');
     Route::put('/profile/update', [AuthController::class, 'update'])->middleware('auth');
     Route::post('/account/delete', [AuthController::class, 'deleteAccount'])->name('account.delete')->middleware('auth');
