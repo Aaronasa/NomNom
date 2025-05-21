@@ -525,12 +525,9 @@ public function updateRestaurant(Request $request)
 
 public function editOrderDetail($id)
 {
-    $restaurant = Restaurant::where('id', Auth::user()->restaurant_id)->first();
+    $restaurant = Auth::user()->restaurant;
 
-    if (!$restaurant) {
-        return redirect()->route('vendor.profile')->with('error', 'Please complete your restaurant profile first.');
-    }
-
+    
     $orderDetail = OrderDetail::with([
         'menuDayInOrderDetail.foodInMenuDay',
         'orderInOrderDetail.user',
@@ -554,13 +551,13 @@ public function updateOrderDetail(Request $request, $id)
 {
     $orderDetail = OrderDetail::findOrFail($id);
 
-    $restaurant = Restaurant::where('id', Auth::user()->restaurant_id)->first();
+    $restaurant = Auth::user()->restaurant;
     $foodIds = Food::where('restaurant_id', $restaurant->id)->pluck('id');
     $menuDayIds = MenuDay::whereIn('food_id', $foodIds)->pluck('id');
 
-    if (!$menuDayIds->contains($orderDetail->menuDay_id)) {
-        return redirect()->route('vendor.orders.index')->with('error', 'Unauthorized to update this order.');
-    }
+    // if (!$menuDayIds->contains($orderDetail->menuDay_id)) {
+    //     return redirect()->route('vendor.orders.index')->with('error', 'Unauthorized to update this order.');
+    // }
 
     $request->validate([
         'price' => 'required|numeric',
@@ -580,7 +577,7 @@ public function updateOrderDetail(Request $request, $id)
         $request->file('proof_image')->move(public_path('image/proofs'), $orderDetail->id . '.jpg');
     }
 
-    return redirect()->route('vendor.orders.index')->with('success', 'Order detail updated successfully.');
+    return redirect()->route('vendor.products.index')->with('success', 'Order detail updated successfully.');
 }
 
     
