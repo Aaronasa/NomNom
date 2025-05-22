@@ -21,7 +21,7 @@ class OrderFactory extends Factory
         return [
             'orderDate' => $this->faker->dateTimeBetween('2025-01-01', '2025-12-31')->format('Y-m-d'),
             'totalPrice' => $this->faker->randomFloat(2, 100000, 500000),
-            'paymentStatus' => $this->faker->boolean(),
+            'paymentStatus' => $this->faker->boolean() ? 'Paid' : 'UnPaid',
             'user_id' => User::inRandomOrder()->first()->id,
         ];
     }
