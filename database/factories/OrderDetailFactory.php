@@ -21,7 +21,7 @@ class OrderDetailFactory extends Factory
     {
         return [
             'price' => $this->faker->randomFloat(2, 50000, 1000000),
-            'unit' => $this->faker->randomNumber(1, 5),
+            'unit' => $this->faker->numberBetween(1, 5),
             'deliveryStatus_id' => 1,
             'namapenerima' => $this->faker->name(),
             'image' => $this->faker->imageUrl(640, 480, 'food'),

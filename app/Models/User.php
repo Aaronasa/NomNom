@@ -52,7 +52,7 @@ class User extends Authenticatable
         ];
     }
 
-    
+
     /**
      * Relasi ke Role
      */
@@ -76,7 +76,7 @@ class User extends Authenticatable
     {
         return $this->hasOne(Restaurant::class, 'user_id');
     }
-    
+
     /**
      * Cek apakah user adalah restaurant owner
      */
@@ -84,5 +84,8 @@ class User extends Authenticatable
     {
         return $this->role_id === 3;
     }
-
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

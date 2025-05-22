@@ -10,17 +10,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class MenuDay extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'foodDate',
         'food_id'
     ];
 
-    public function foodInMenuDay(): BelongsTo{
+    public function foodInMenuDay()
+    {
         return $this->belongsTo(Food::class, 'food_id');
     }
 
-    public function menuDayToOrderDetail(): HasMany {
+    public function menuDayToOrderDetail(): HasMany
+    {
         return $this->hasMany(OrderDetail::class, 'menuDay_id');
     }
 }

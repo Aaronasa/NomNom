@@ -29,8 +29,7 @@
                             class="rounded-md px-4 py-2 text-base font-medium text-black hover:text-[#552e13]">Home</a>
                         <a href="/order"
                             class="rounded-md px-4 py-2 text-base font-medium text-black hover:text-[#552e13]">Menu</a>
-                        <a href="/reviews"
-                            class="rounded-md px-4 py-2 text-base font-medium text-black hover:text-[#552e13]">Reviews</a>
+                        <a href="{{ route('reviews.index') }}" class="block rounded-md px-3 py-2 text-base font-medium hover:text-[#A07658]">Reviews</a>
                         <a href="/history"
                             class="rounded-md px-4 py-2 text-base font-medium text-black hover:text-[#552e13]">My
                             Order</a>
@@ -86,10 +85,10 @@
             <div class="space-y-1 px-2 pt-2 pb-3 bg-[#ffefd0] text-black">
                 <a href="/home" class="block rounded-md px-3 py-2 text-base font-medium hover:text-[#A07658]">Home</a>
                 <a href="/order" class="block rounded-md px-3 py-2 text-base font-medium hover:text-[#A07658]">Menu</a>
-                <a href="/reviews"
+                <a href="{{ route('reviews.index') }} "
                     class="block rounded-md px-3 py-2 text-base font-medium hover:text-[#A07658]">Reviews</a>
-                <a href="/history"
-                    class="block rounded-md px-3 py-2 text-base font-medium hover:text-[#A07658]">My Order</a>
+                <a href="/history" class="block rounded-md px-3 py-2 text-base font-medium hover:text-[#A07658]">My
+                    Order</a>
             </div>
         </div>
     </nav>
