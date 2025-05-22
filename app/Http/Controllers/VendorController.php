@@ -13,6 +13,31 @@ use Illuminate\Support\Facades\Validator;
 
 class VendorController extends Controller
 {
+    public function add(){
+        $restaurant = Auth::user()->restaurant;
+
+        if (! $restaurant) {
+            return redirect()->route('vendor.profile')->with('error', 'Please complete your restaurant profile first.');
+        }
+
+        $products = $restaurant->restaurantToFood()
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        $foodIds    = $restaurant->restaurantToFood()->pluck('id');
+        $menuDayIds = MenuDay::whereIn('food_id', $foodIds)->pluck('id');
+
+        $orderDetails = OrderDetail::whereIn('menuDay_id', $menuDayIds)
+            ->with([
+                'orderInOrderDetail',
+                'orderInOrderDetail.user',
+                'menuDayInOrderDetail.foodInMenuDay',
+                'deliveryStatusInOrderDetail',
+            ])
+            ->get();
+    
+        return view('vendorAddProduct', compact('products', 'orderDetails'));
+    }
     /**
      * Display the vendor dashboard with summary data
      */
@@ -218,7 +243,7 @@ class VendorController extends Controller
 
         $menuDay = MenuDay::where('food_id', $food->id)->first();
 
-        return view('vendor.products.edit', compact('food', 'restaurant', 'menuDay'));
+        return view('vendoreditFood', compact('food', 'restaurant', 'menuDay'));
     }
 
     /**

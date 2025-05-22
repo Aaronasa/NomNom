@@ -1,10 +1,6 @@
 <x-layout>
     <body class="bg-gray-100 font-family-karla">
         <div class="flex min-h-screen">
-            <!-- Fixed Sidebar -->
-            <aside class="w-64 bg-white shadow-lg fixed inset-y-0 left-0 z-20 overflow-y-auto">
-                <x-sidebar></x-sidebar>
-            </aside>
 
             <!-- Main Content - With left margin to prevent overlap -->
             <div class="flex-1 flex flex-col ml-64">

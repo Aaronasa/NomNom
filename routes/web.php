@@ -37,9 +37,9 @@ Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () 
     Route::put('/profile', [VendorController::class, 'updateProfile'])->name('vendor.profile.update');
     
     // Products (Foods)
-    Route::get('/products', [VendorController::class, 'productsIndex'])->name('vendor.products.index');
+    Route::get('/productss', [VendorController::class, 'add'])->name('vendors');
     Route::get('/products/create', [VendorController::class, 'createProduct'])->name('vendor.products.create');
-    Route::post('/products', [VendorController::class, 'storeProduct'])->name('vendor.products.store');
+    Route::post('/products/store', [VendorController::class, 'storeProduct'])->name('vendor.products.store');
     Route::get('/products/{id}/edit', [VendorController::class, 'editProduct'])->name('vendor.products.edit');
     Route::put('/products/{id}', [VendorController::class, 'updateProduct'])->name('vendor.products.update');
     Route::delete('/products/{id}', [VendorController::class, 'destroyProduct'])->name('vendor.products.destroy');
@@ -47,7 +47,8 @@ Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () 
     // Orders
     Route::get('/orders', [VendorController::class, 'ordersIndex'])->name('vendor.orders.index');
     Route::get('/orders/{id}', [VendorController::class, 'showOrder'])->name('vendor.orders.show');
-    Route::post('/orders/status/{id}', [VendorController::class, 'updateOrderStatus'])->name('vendor.orders.updateStatus');});
+    Route::post('/orders/status/{id}', [VendorController::class, 'updateOrderStatus'])->name('vendor.orders.updateStatus');
+});
 
 // admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
