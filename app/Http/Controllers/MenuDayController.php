@@ -4,19 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Models\MenuDay;
 use App\Models\Order;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class MenuDayController extends Controller
 {
     public function ViewMenuDay()
     {
         $MenuDays = MenuDay::with('foodInMenuDay')->paginate(12);
+        
+        // Get reviews with all necessary relationships
+        $reviews = Review::with([
+            'user',
+            'orderDetail.menuDayInOrderDetail.foodInMenuDay'
+        ])
+        ->whereNotNull('comment') // Only reviews with comments
+        ->where('comment', '!=', '') // Only non-empty comments
+        ->orderBy('created_at', 'desc')
+        ->limit(10) // Show latest 10 reviews
+        ->get();
+
         return view('home', [
-            'MenuDays' => $MenuDays
+            'MenuDays' => $MenuDays,
+            'reviews' => $reviews
         ]);
     }
-
 
     public function ViewMenuDayForAdmin()
     {
@@ -34,8 +48,28 @@ class MenuDayController extends Controller
             ->whereDate('foodDate', $date)
             ->get();
 
+        // Get average ratings for each menu day
+        $menuDayRatings = [];
+        foreach ($MenuDays as $menuDay) {
+            $averageRating = DB::table('reviews')
+                ->join('order_details', 'reviews.order_detail_id', '=', 'order_details.id')
+                ->where('order_details.menuDay_id', $menuDay->id)
+                ->avg('reviews.rating');
+            
+            $reviewCount = DB::table('reviews')
+                ->join('order_details', 'reviews.order_detail_id', '=', 'order_details.id')
+                ->where('order_details.menuDay_id', $menuDay->id)
+                ->count();
+            
+            $menuDayRatings[$menuDay->id] = [
+                'average' => $averageRating ? round($averageRating, 1) : 0,
+                'count' => $reviewCount
+            ];
+        }
+
         return view('order', [
             'MenuDays' => $MenuDays,
+            'menuDayRatings' => $menuDayRatings
         ]);
     }
 
@@ -47,7 +81,6 @@ class MenuDayController extends Controller
             'menuDay' => $menuDay,
         ]);
     }
-
 
     public function addToCart(Request $request)
     {
@@ -69,7 +102,6 @@ class MenuDayController extends Controller
         }
 
         if (!$check) {
-            // Add food item to the cart
             $cart[] = [
                 'menuDayId' => $food['menuDayId'],
                 'foodName' => $food['foodName'],
@@ -110,13 +142,11 @@ class MenuDayController extends Controller
             return $total + $item['foodPrice'] * $item['quantity'];
         }, 0);
 
-        // Store cart data in session for payment page
         session()->put('payment_data', [
             'cart' => $cart,
             'totalPrice' => $totalPrice
         ]);
 
-        // Redirect to payment page instead of creating order immediately
         return redirect()->route('payment')->with('success', 'Proceed to payment.');
     }
 
@@ -141,44 +171,38 @@ class MenuDayController extends Controller
         return redirect()->back()->with('success', 'Item removed from cart successfully.');
     }
 
-public function update(Request $request)
-{
-    $cart = session()->get('cart', []);
-    $menuDayId = $request->input('menuDayId');
-    $quantity = (int)$request->input('quantity');
-    
-    // Find the item in the cart array
-    $updated = false;
-    foreach ($cart as $index => $item) {
-        if ($item['menuDayId'] == $menuDayId) {
-            // Update quantity
-            $cart[$index]['quantity'] = $quantity;
-            $updated = true;
-            
-            // Calculate item total - ensure it's an integer
-            $itemTotal = intval($cart[$index]['foodPrice'] * $quantity);
-            break;
+    public function update(Request $request)
+    {
+        $cart = session()->get('cart', []);
+        $menuDayId = $request->input('menuDayId');
+        $quantity = (int)$request->input('quantity');
+        
+        $updated = false;
+        foreach ($cart as $index => $item) {
+            if ($item['menuDayId'] == $menuDayId) {
+                $cart[$index]['quantity'] = $quantity;
+                $updated = true;
+                $itemTotal = intval($cart[$index]['foodPrice'] * $quantity);
+                break;
+            }
         }
+        
+        if (!$updated) {
+            return response()->json(['success' => false, 'message' => 'Item not found in cart'], 404);
+        }
+        
+        session()->put('cart', $cart);
+        
+        $subtotal = intval(array_reduce($cart, function ($total, $item) {
+            return $total + ($item['foodPrice'] * $item['quantity']);
+        }, 0));
+        
+        return response()->json([
+            'success' => true,
+            'itemTotal' => $itemTotal,
+            'subtotal' => $subtotal
+        ]);
     }
-    
-    if (!$updated) {
-        return response()->json(['success' => false, 'message' => 'Item not found in cart'], 404);
-    }
-    
-    // Save updated cart
-    session()->put('cart', $cart);
-    
-    // Calculate new subtotal - ensure it's an integer
-    $subtotal = intval(array_reduce($cart, function ($total, $item) {
-        return $total + ($item['foodPrice'] * $item['quantity']);
-    }, 0));
-    
-    return response()->json([
-        'success' => true,
-        'itemTotal' => $itemTotal,
-        'subtotal' => $subtotal
-    ]);
-}
 
     public function showPayment()
     {
@@ -190,12 +214,10 @@ public function update(Request $request)
             return redirect()->route('cart')->with('error', 'Cart is empty.');
         }
 
-        // Calculate additional fees (replace with your actual logic)
-        $deliveryFee = 10000; // Example delivery fee
-        $adminFee = 2000;    // Example admin fee
+        $deliveryFee = 10000;
+        $adminFee = 2000;
         $grandTotal = intval($totalPrice + $deliveryFee + $adminFee);
-        // dd($grandTotal);
-        // Create the order first to get an order ID
+
         $order = new Order();
         $order->user_id = Auth::id();
         $order->orderDate = now();
@@ -203,10 +225,8 @@ public function update(Request $request)
         $order->paymentStatus = 'Unpaid';
         $order->save();
 
-        // Store the order ID in session
         session()->put('payment_data.order_id', $order->id);
 
-        // Add order items
         foreach ($cart as $item) {
             $order->orderDetailInOrder()->create([
                 'menuDay_id' => $item['menuDayId'],
@@ -221,7 +241,6 @@ public function update(Request $request)
         \Midtrans\Config::$isSanitized = config('midtrans.is_sanitized', true);
         \Midtrans\Config::$is3ds = config('midtrans.is_3ds', true);
 
-        // Prepare Midtrans parameters
         $params = [
             'transaction_details' => [
                 'order_id' => 'ORDER-' . $order->id,
@@ -242,7 +261,6 @@ public function update(Request $request)
             }, $cart)
         ];
         
-        // Add delivery and admin fees to item details
         $params['item_details'][] = [
             'id' => 'DELIVERY',
             'price' => $deliveryFee,
@@ -257,7 +275,6 @@ public function update(Request $request)
             'name' => 'Admin Fee',
         ];
 
-        // Get Snap token
         $snapToken = \Midtrans\Snap::getSnapToken($params);
 
         return view('payment', [
@@ -271,7 +288,6 @@ public function update(Request $request)
         ]);
     }
 
-    // Update paymentfinish method to use the order ID from session
     public function paymentfinish(Request $request)
     {
         $paymentData = session()->get('payment_data', []);
@@ -281,21 +297,15 @@ public function update(Request $request)
             return redirect()->route('cart')->with('error', 'No order found.');
         }
         
-        // Find the order
         $order = Order::findOrFail($orderId);
-        
-        // Update payment status based on type of completion
-        // In real implementation, you should check the actual payment status from Midtrans
         $order->paymentStatus = 'Paid';
         $order->save();
         
-        // Clear cart and payment data from session
         session()->forget(['cart', 'payment_data']);
         
         return redirect()->route('order.history')->with('success', 'Payment completed successfully.');
     }
 
-    // Add a callback handler for Midtrans notifications
     public function paymentCallback(Request $request)
     {
         \Midtrans\Config::$serverKey = config('midtrans.serverKey');
@@ -307,7 +317,6 @@ public function update(Request $request)
             $fraud = $notification->fraud_status;
             $order_id = $notification->order_id;
             
-            // Extract order ID from 'ORDER-123' format
             $order_id = str_replace('ORDER-', '', $order_id);
             
             $order = Order::findOrFail($order_id);

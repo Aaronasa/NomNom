@@ -19,9 +19,15 @@
                         -4px 4px 6px rgba(0, 0, 0, 0.2), 
                         0 -1px 2px rgba(0, 0, 0, 0.1);
         }
+
+        .star-filled {
+            color: #D9B25F;
+        }
+        
+        .star-empty {
+            color: #E5E5E5;
+        }
     </style>
-
-
 
     <section class="bg-[#FFF8E6] py-12 min-h-screen">
         <div class="container mx-auto px-4 max-w-6xl font-[Instrument Sans]">
@@ -51,6 +57,9 @@
                         @php
                             $foodImages = explode(',', $menuDay->foodInMenuDay->foodImage);
                             $firstImage = $foodImages[0];
+                            $rating = $menuDayRatings[$menuDay->id] ?? ['average' => 0, 'count' => 0];
+                            $averageRating = $rating['average'];
+                            $reviewCount = $rating['count'];
                         @endphp
                         <a href="{{ route('food.detail', $menuDay->id) }}" >
                         <div class="bg-[#FFF8E6] border border-[#E2CEB1] rounded-xl menu-item flex p-4 gap-4 items-center">
@@ -64,13 +73,31 @@
                             <div class="flex-1">
                                 <div class="flex justify-between items-start">
                                     <h3 class="text-xl font-bold text-[#4A3B2A]">{{ $menuDay->foodInMenuDay->foodName }}</h3>
-                                    <div class="flex items-center gap-1 text-[#D9B25F] text-sm font-medium">
-                                        <svg class="w-5 h-5 fill-current" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20">
-                                            <path
-                                                d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.564-.955L10 0l2.948 5.955 6.564.955-4.756 4.635 1.122 6.545z" />
-                                        </svg>
-                                        4.5
+                                    <div class="flex items-center gap-1 text-sm font-medium">
+                                        @if($averageRating > 0)
+                                            <!-- Display stars based on rating -->
+                                            <div class="flex">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    <svg class="w-4 h-4 {{ $i <= $averageRating ? 'star-filled' : 'star-empty' }}" 
+                                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.564-.955L10 0l2.948 5.955 6.564.955-4.756 4.635 1.122 6.545z" />
+                                                    </svg>
+                                                @endfor
+                                            </div>
+                                            <span class="text-[#D9B25F] ml-1">{{ $averageRating }}</span>
+                                            <span class="text-gray-500 text-xs">({{ $reviewCount }})</span>
+                                        @else
+                                            <!-- No reviews yet -->
+                                            <div class="flex">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    <svg class="w-4 h-4 star-empty" xmlns="http://www.w3.org/2000/svg" 
+                                                         viewBox="0 0 20 20" fill="currentColor">
+                                                        <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.564-.955L10 0l2.948 5.955 6.564.955-4.756 4.635 1.122 6.545z" />
+                                                    </svg>
+                                                @endfor
+                                            </div>
+                                            <span class="text-gray-400 ml-1 text-xs">No reviews</span>
+                                        @endif
                                     </div>
                                 </div>
                                 <p class="text-sm text-gray-600 mt-2 line-clamp-3">
