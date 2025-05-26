@@ -7,7 +7,7 @@ use App\Models\Order;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB; // Make sure to import DB facade
 
 class MenuDayController extends Controller
 {
@@ -15,15 +15,14 @@ class MenuDayController extends Controller
     {
         $MenuDays = MenuDay::with('foodInMenuDay')->paginate(12);
         
-        // Get reviews with all necessary relationships
         $reviews = Review::with([
             'user',
             'orderDetail.menuDayInOrderDetail.foodInMenuDay'
         ])
-        ->whereNotNull('comment') // Only reviews with comments
-        ->where('comment', '!=', '') // Only non-empty comments
+        ->whereNotNull('comment') 
+        ->where('comment', '!=', '') 
         ->orderBy('created_at', 'desc')
-        ->limit(10) // Show latest 10 reviews
+        ->limit(10) 
         ->get();
 
         return view('home', [
@@ -48,7 +47,6 @@ class MenuDayController extends Controller
             ->whereDate('foodDate', $date)
             ->get();
 
-        // Get average ratings for each menu day
         $menuDayRatings = [];
         foreach ($MenuDays as $menuDay) {
             $averageRating = DB::table('reviews')
@@ -77,8 +75,25 @@ class MenuDayController extends Controller
     {
         $menuDay = MenuDay::with('foodInMenuDay', 'foodInMenuDay.restaurantInFood')
             ->findOrFail($id);
+
+        // Calculate average rating and review count for this specific menuDay
+        $averageRatingDb = DB::table('reviews')
+            ->join('order_details', 'reviews.order_detail_id', '=', 'order_details.id')
+            ->where('order_details.menuDay_id', $menuDay->id)
+            ->avg('reviews.rating');
+
+        $reviewCountDb = DB::table('reviews')
+            ->join('order_details', 'reviews.order_detail_id', '=', 'order_details.id')
+            ->where('order_details.menuDay_id', $menuDay->id)
+            ->count();
+
+        $averageRating = $averageRatingDb ? round($averageRatingDb, 1) : 0;
+        $reviewCount = $reviewCountDb;
+
         return view('foodDetail', [
             'menuDay' => $menuDay,
+            'averageRating' => $averageRating, // Pass averageRating to the view
+            'reviewCount' => $reviewCount,   // Pass reviewCount to the view
         ]);
     }
 

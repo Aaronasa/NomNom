@@ -61,7 +61,7 @@
 <div>
     <aside class="sidebar">
         <div class="p-6">
-            <a href="{{ route('login') }}" class="rainbow-admin">Admin</a>
+            <a href="/" class="rainbow-admin">Admin</a>
         </div>
     <nav class="text-[#E5CBA6] text-base font-semibold pt-3">
             <a href="{{ route('admin.users') }}" class="flex items-center active-nav-link text-white py-4 pl-6 nav-item">

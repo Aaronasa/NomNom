@@ -11,18 +11,47 @@
                 </div>
             @endif
 
-            @foreach ($orderDetails as $item)
+            @if (session('error'))
+                <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            <!-- Debug information (remove in production) -->
+            @if(config('app.debug'))
+                <div class="bg-blue-100 text-blue-700 px-4 py-2 rounded mb-4">
+                    <strong>Debug Info:</strong> Found {{ $orderDetails->count() }} order details
+                </div>
+            @endif
+
+            @forelse ($orderDetails as $item)
                 @php
                     $menuDay = $item->menuDayInOrderDetail;
                     $food = $menuDay ? $menuDay->foodInMenuDay : null;
                     $review = $item->review;
+                    $order = $item->orderInOrderDetail;
                 @endphp
 
                 <div class="bg-white rounded shadow p-4 mb-4">
+                
                     <div class="flex items-center gap-4">
                         @if ($food && $food->foodImage)
-                            @php $foodImage = explode(',', $food->foodImage)[0] ?? null; @endphp
-                            <img src="{{ asset($foodImage) }}" alt="Image" class="w-16 h-16 object-cover rounded">
+                            @php 
+                                $foodImages = explode(',', $food->foodImage);
+                                $foodImage = trim($foodImages[0] ?? '');
+                            @endphp
+                            @if($foodImage)
+                                <img src="{{ asset($foodImage) }}" alt="{{ $food->foodName ?? 'Food Image' }}" 
+                                     class="w-16 h-16 object-cover rounded" 
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="w-16 h-16 bg-gray-200 flex items-center justify-center text-sm text-gray-500" style="display: none;">
+                                    No Image
+                                </div>
+                            @else
+                                <div class="w-16 h-16 bg-gray-200 flex items-center justify-center text-sm text-gray-500">
+                                    No Image
+                                </div>
+                            @endif
                         @else
                             <div class="w-16 h-16 bg-gray-200 flex items-center justify-center text-sm text-gray-500">
                                 No Image
@@ -30,11 +59,20 @@
                         @endif
 
                         <div class="flex-1">
-                            <h2 class="font-semibold text-lg">{{ $food->foodName ?? 'Unknown Food' }}</h2>
+                            <h2 class="font-semibold text-lg">
+                                {{ $food->foodName ?? 'Unknown Food' }}
+                            </h2>
                             <p class="text-sm text-gray-600">
-                                Price: Rp. {{ number_format($item->price, 0, ',', '.') }} |
-                                Qty: {{ $item->unit }}
+                                Price: Rp. {{ number_format($item->price ?? 0, 0, ',', '.') }} |
+                                Qty: {{ $item->unit ?? 0 }}
                             </p>
+                            
+                            <!-- Show order date -->
+                            @if($order)
+                                <p class="text-xs text-gray-400">
+                                    Ordered: {{ $order->created_at->format('d M Y, H:i') }}
+                                </p>
+                            @endif
 
                             @if ($review)
                                 <div class="flex items-center mt-2">
@@ -44,7 +82,7 @@
                                         </svg>
                                     @endfor
                                 </div>
-                                <p class="text-gray-600 italic mt-1">"{{ $review->comment }}"</p>
+                                <p class="text-gray-600 italic mt-1">"{{ $review->comment ?? 'No comment' }}"</p>
                             @else
                                 <a href="{{ route('reviews.add', $item->id) }}"
                                    class="inline-block mt-2 text-sm bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded">
@@ -54,11 +92,18 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
-
-            @if ($orderDetails->isEmpty())
-                <p class="text-center text-gray-500">No reviewed items found.</p>
-            @endif
+            @empty
+                <div class="bg-white rounded shadow p-8 text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No orders found</h3>
+                    <p class="text-gray-500 mb-4">You haven't completed any orders yet, or your orders are still being processed.</p>
+                    <a href="{{ route('home') }}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
+                        Start Ordering
+                    </a>
+                </div>
+            @endforelse
         </div>
     </section>
 

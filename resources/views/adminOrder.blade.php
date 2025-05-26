@@ -122,7 +122,7 @@
                                                 {{ $orderDetail->orderInOrderDetail->user->username ?? 'N/A' }}</td>
                                             <td class="py-3 px-4">
                                                 <div class="flex justify-center gap-2">
-                                                    <a href="{{ route('admin.orderDetails.edit', $orderDetail->id) }}"
+                                                     <a href="{{ route('vendor.products.edit', $orderDetail->id) }}"
                                                         class="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 transition flex items-center">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
                                                             fill="none" viewBox="0 0 24 24" stroke="currentColor">

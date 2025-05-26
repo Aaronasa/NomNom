@@ -52,16 +52,22 @@ class ReviewController extends Controller
 
         return redirect()->route('reviews.index')->with('success', 'Review submitted successfully!');
     }
+    // In app/Http/Controllers/ReviewController.php
+
     public function index()
     {
+        // The DeliveryStatusSeeder confirms 'already received' will have ID 3
+        $alreadyReceivedStatusId = 3; //
+
         $orderDetails = OrderDetail::with([
             'menuDayInOrderDetail.foodInMenuDay',
-            'orderInOrderDetail',
-            'review'
+            'orderInOrderDetail.user',
+            'review',
+            'deliveryStatusInOrderDetail'
         ])
-            ->whereHas('orderInOrderDetail', function ($query) {
-                $query->where('user_id', Auth::id())
-                    ->where('paymentStatus', 1);
+            ->where('deliveryStatus_id', $alreadyReceivedStatusId) // Filter by OrderDetail's delivery status
+            ->whereHas('orderInOrderDetail', function ($query) { // Ensure the order belongs to the logged-in user
+                $query->where('user_id', Auth::id());
             })
             ->orderBy('created_at', 'desc')
             ->get();

@@ -19,7 +19,7 @@
 
         <!-- Logo -->
         <div class="flex-shrink-0 flex items-center pl-14 sm:pl-0">
-          <img class="h-12 sm:h-14 w-auto" src="image/LogoDEI.png" alt="Logo">
+          <img class="h-12 sm:h-14 w-auto" src="{{ asset('image/LogoDEI.png') }}" alt="Logo">
         </div>
 
         <!-- Desktop Menu -->
@@ -75,14 +75,10 @@
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-[#E5CBA6] hover:text-white transition-colors duration-200">
                 Your Profile
               </a>
-              <button type="button"
+              <a href="/"
                 class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-[#E5CBA6] hover:text-white transition-colors duration-200">
                 Sign out
-              </button>
-              <button type="button"
-                class="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-600 hover:text-white transition-colors duration-200">
-                Delete Account
-              </button>
+              </a>
             </div>
           </div>
         </div>
