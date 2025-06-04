@@ -139,14 +139,8 @@ class VendorController extends Controller
      */
     public function createProduct()
     {
-        $restaurant = Restaurant::where('id', Auth::user()->restaurant_id)->first();
-
-        if (! $restaurant) {
-            return redirect()->route('vendor.profile')->with('error', 'Please complete your restaurant profile first.');
-        }
-
-        // This should return vendorAddProduct.blade.php
-        return view('vendorAddProduct', compact('restaurant'));
+     
+        return view('vendorAddProduct');
     }
 
     /**

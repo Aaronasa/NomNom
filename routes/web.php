@@ -38,7 +38,8 @@ Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () 
 
     // Products (Foods)
     Route::get('/products', [VendorController::class, 'productsIndex'])->name('vendor.products.index');
-    Route::get('/products/create', [VendorController::class, 'createProduct'])->name('vendor.products.create');
+    Route::get('/products/create', [VendorController::class, 'createProduct'])->name('vendorAddProduct');
+
     Route::post('/products', [VendorController::class, 'storeProduct'])->name('vendor.products.store');
     Route::get('/products/{id}/edit', [VendorController::class, 'editProduct'])->name('vendor.products.edit');
     Route::put('/products/{id}', [VendorController::class, 'updateProduct'])->name('vendor.products.update');
@@ -52,7 +53,6 @@ Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () 
     Route::put('/orders/detail/{id}', [VendorController::class, 'updateOrderDetail'])->name('vendor.orders.updateDetail');
 
     Route::post('/vendor/orders/{orderDetailId}/upload-proof', [VendorController::class, 'uploadProof'])->name('vendor.orders.uploadProof');
-
 });
 
 // admin

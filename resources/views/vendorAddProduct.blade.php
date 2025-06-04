@@ -1,349 +1,349 @@
-<x-layout>
-    <body class="bg-gray-100 font-family-karla">
-        <div class="flex min-h-screen">
-            <!-- Fixed Sidebar -->
-            <aside class="w-64 bg-white shadow-lg fixed inset-y-0 left-0 z-20 overflow-y-auto">
-                <x-sidebar></x-sidebar>
-            </aside>
+<!DOCTYPE html>
+<html lang="id">
 
-            <!-- Main Content - With left margin to prevent overlap -->
-            <div class="flex-1 flex flex-col ml-64">
-                <!-- Sticky Header with Search and Create Button -->
-                <header class="bg-white shadow-md sticky top-0 z-10 px-6 py-4">
-                    <div class="max-w-7xl mx-auto flex justify-between items-center">
-                        <h1 class="text-2xl font-bold text-gray-800">Menu Management</h1>
-                        
-                        <div class="flex items-center space-x-4">
-                            <!-- Search Bar -->
-                            <div class="relative">
-                                <input type="text" id="searchFood" placeholder="Search foods..." 
-                                    class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 w-64">
-                                <div class="absolute left-3 top-2.5 text-gray-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                    </svg>
-                                </div>
-                            </div>
-                            
-                            <!-- Create Button - Scrolls to create form -->
-                            <a href="#createFoodForm" class="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-all transform hover:scale-105 flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                                Create New Menu
-                            </a>
-                        </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Data Makanan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body
+    class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 flex items-center justify-center p-4">
+    <div
+        class="w-full max-w-md bg-white backdrop-blur-lg rounded-2xl shadow-2xl p-8 transform hover:scale-105 transition-all duration-300 border border-[#E2CEB1]">
+        <!-- Header -->
+        <div class="text-center mb-8">
+           <img src="{{ asset('image/LogoDEI.png') }}" alt="logo">
+
+            <h1 class="text-2xl font-bold bg-gradient-to-r from-[#553827] to-[#cfad7d] bg-clip-text text-transparent">
+                Form Data Makanan
+            </h1>
+            <p class="text-[#553827] mt-2 opacity-80">Tambahkan makanan baru</p>
+        </div>
+
+        <!-- Form -->
+        <form id="foodForm" class="space-y-6">
+            <!-- Nama Makanan -->
+            <div class="group">
+                <label for="foodName"
+                    class="block text-sm font-semibold text-[#553827] mb-2 group-focus-within:text-[#cfad7d] transition-colors">
+                    Nama Makanan
+                </label>
+                <div class="relative">
+                    <input type="text" id="foodName" name="foodName" required
+                        class="w-full px-4 py-3 border-2 border-[#E2CEB1] rounded-xl focus:border-[#cfad7d] focus:ring-4 focus:ring-[#FFF8E6] outline-none transition-all duration-300 text-[#553827] placeholder-gray-400"
+                        placeholder="Contoh: Nasi Goreng Spesial">
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                        <svg class="w-5 h-5 text-[#cfad7d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+                            </path>
+                        </svg>
                     </div>
-                </header>
+                </div>
+            </div>
 
-                <!-- Food List Section -->
-                <section class="p-6 md:p-10">
-                    <div class="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-                        <div class="bg-blue-50 px-6 py-4 border-b border-blue-100 flex justify-between items-center">
-                            <div>
-                                <h2 class="text-lg font-semibold text-gray-700">Your Menu Items</h2>
-                                <p class="text-sm text-gray-500">Manage your restaurant's available foods</p>
-                            </div>
-                            <div class="flex space-x-2">
-                                <button id="exportBtn" class="bg-gray-100 text-gray-700 py-1 px-3 rounded-md hover:bg-gray-200 transition-colors flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                    </svg>
-                                    Export
-                                </button>
-                                <button id="printBtn" class="bg-gray-100 text-gray-700 py-1 px-3 rounded-md hover:bg-gray-200 transition-colors flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                                    </svg>
-                                    Print
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full table-auto">
-                                <thead>
-                                    <tr class="bg-gray-50 text-gray-600 uppercase text-xs border-b">
-                                        <th class="py-3 px-4 font-semibold text-left">ID</th>
-                                        <th class="py-3 px-4 font-semibold text-left">Food Name</th>
-                                        <th class="py-3 px-4 font-semibold text-left">Description</th>
-                                        <th class="py-3 px-4 font-semibold text-left">Price</th>
-                                        <th class="py-3 px-4 font-semibold text-left">Available Date</th>
-                                        <th class="py-3 px-4 font-semibold text-center">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-100">
-                                    @forelse ($products as $product)
-                                        <tr class="hover:bg-gray-50 transition-colors">
-                                            <td class="py-3 px-4">{{ $loop->iteration }}</td>
-                                            <td class="py-3 px-4 font-medium">{{ $product->foodName }}</td>
-                                            <td class="py-3 px-4 text-gray-500 max-w-xs truncate">{{ $product->foodDescription }}</td>
-                                            <td class="py-3 px-4 font-medium">Rp{{ number_format($product->foodPrice, 2) }}</td>
-                                            <td class="py-3 px-4">
-                                                @php
-                                                    $menuDay = \App\Models\MenuDay::where('food_id', $product->id)->first();
-                                                @endphp
-                                                @if($menuDay)
-                                                    <span class="px-2 py-1 bg-green-50 text-green-700 rounded-full text-xs">
-                                                        {{ \Carbon\Carbon::parse($menuDay->foodDate)->format('d M Y') }}
-                                                    </span>
-                                                @else
-                                                    <span class="px-2 py-1 bg-gray-50 text-gray-700 rounded-full text-xs">
-                                                        Not Scheduled
-                                                    </span>
-                                                @endif
-                                            </td>
-                                            <td class="py-3 px-4">
-                                                <div class="flex justify-center gap-2">
-                                                    <a href="{{ route('vendor.products.edit', $product->id) }}" 
-                                                        class="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 transition flex items-center">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                        </svg>
-                                                        Edit
-                                                    </a>
-                                                    <form action="{{ route('vendor.products.destroy', $product->id) }}" method="POST" class="inline-block">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" 
-                                                            class="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition flex items-center"
-                                                            onclick="return confirm('Are you sure you want to delete this food item?')">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                            </svg>
-                                                            Delete
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="6" class="py-8 text-center text-gray-500">
-                                                <div class="flex flex-col items-center justify-center">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                                                    </svg>
-                                                    <p class="text-lg font-medium">No foods found</p>
-                                                    <p class="text-sm">Get started by creating a new menu item below</p>
-                                                    <a href="#createFoodForm" class="mt-4 bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition">
-                                                        Create Your First Menu
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Pagination -->
-                        <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
-                            <div class="text-sm text-gray-500">
-                                Showing <span class="font-medium">{{ count($products) }}</span> entries
-                            </div>
-                            <div>
-                                {{ $products->links() }}
-                            </div>
-                        </div>
+            <!-- Deskripsi Makanan -->
+            <div class="group">
+                <label for="foodDescription"
+                    class="block text-sm font-semibold text-[#553827] mb-2 group-focus-within:text-[#cfad7d] transition-colors">
+                    Deskripsi Makanan
+                </label>
+                <div class="relative">
+                    <textarea id="foodDescription" name="foodDescription" required rows="3"
+                        class="w-full px-4 py-3 border-2 border-[#E2CEB1] rounded-xl focus:border-[#cfad7d] focus:ring-4 focus:ring-[#FFF8E6] outline-none transition-all duration-300 text-[#553827] placeholder-gray-400 resize-none"
+                        placeholder="Ceritakan tentang makanan ini... rasa, bahan, keunikan, dll."></textarea>
+                    <div class="absolute top-3 right-3">
+                        <svg class="w-5 h-5 text-[#cfad7d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                            </path>
+                        </svg>
                     </div>
-                </section>
+                </div>
+            </div>
 
-                <!-- Create Food Form Section -->
-                <section id="createFoodForm" class="p-6 md:p-10 pt-0 scroll-mt-20">
-                    <div class="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-                        <div class="bg-green-50 px-6 py-4 border-b border-green-100">
-                            <h2 class="text-lg font-semibold text-gray-700">Create New Food Item</h2>
-                            <p class="text-sm text-gray-500">Add a new menu item to your restaurant</p>
-                        </div>
-
-                        <form action="{{ route('vendor.products.store') }}" method="POST" enctype="multipart/form-data" class="p-6">
-                            @csrf
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <!-- Left Column -->
-                                <div class="space-y-6">
-                                    <div>
-                                        <label for="foodName" class="block text-sm font-medium text-gray-700 mb-1">Food Name</label>
-                                        <input type="text" name="foodName" id="foodName" value="{{ old('foodName') }}" 
-                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-300 focus:border-green-500 transition-colors" required>
-                                        @error('foodName')
-                                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div>
-                                        <label for="foodPrice" class="block text-sm font-medium text-gray-700 mb-1">Food Price</label>
-                                        <div class="relative">
-                                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">Rp</span>
-                                            <input type="number" name="foodPrice" id="foodPrice" step="0.01" value="{{ old('foodPrice') }}" 
-                                                   class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-300 focus:border-green-500 transition-colors" required>
-                                        </div>
-                                        @error('foodPrice')
-                                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div>
-                                        <label for="foodDate" class="block text-sm font-medium text-gray-700 mb-1">Available Date</label>
-                                        <input type="date" name="foodDate" id="foodDate" value="{{ old('foodDate') }}" 
-                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-300 focus:border-green-500 transition-colors">
-                                        <p class="text-xs text-gray-500 mt-1">Leave empty if this item is always available</p>
-                                        @error('foodDate')
-                                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <!-- Right Column -->
-                                <div class="space-y-6">
-                                    <div>
-                                        <label for="foodDescription" class="block text-sm font-medium text-gray-700 mb-1">Food Description</label>
-                                        <textarea name="foodDescription" id="foodDescription" rows="5"
-                                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-300 focus:border-green-500 transition-colors">{{ old('foodDescription') }}</textarea>
-                                        @error('foodDescription')
-                                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div>
-                                        <label for="foodImages" class="block text-sm font-medium text-gray-700 mb-1">Food Images (Max 2)</label>
-                                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-green-500 transition-colors">
-                                            <input type="file" name="foodImages[]" id="foodImages" multiple class="hidden" accept="image/*" onchange="previewMultipleImages(this)">
-                                            <label for="foodImages" class="cursor-pointer">
-                                                <div id="previewImagesContainer" class="mx-auto w-full h-32 flex items-center justify-center">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                    </svg>
-                                                </div>
-                                                <span class="mt-2 block text-sm font-medium text-green-500">Choose images or drag and drop (Max 2)</span>
-                                            </label>
-                                        </div>
-                                        <div id="imagePreviewGallery" class="mt-2 flex flex-wrap gap-2"></div>
-                                        @error('foodImages')
-                                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                        @enderror
-                                        @error('foodImages.*')
-                                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mt-6 flex justify-end">
-                                <button type="submit" class="bg-green-500 text-white py-2 px-6 rounded-md hover:bg-green-600 transition-all transform hover:scale-105 focus:ring-2 focus:ring-green-300 focus:outline-none flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                    </svg>
-                                    Create Food Item
-                                </button>
-                            </div>
-                        </form>
+            <!-- Upload Foto -->
+            <div class="group">
+                <label for="foodImage"
+                    class="block text-sm font-semibold text-[#553827] mb-2 group-focus-within:text-[#cfad7d] transition-colors">
+                    Foto Makanan
+                </label>
+                <div class="relative">
+                    <input type="file" id="foodImage" name="foodImage" accept="image/*" class="hidden">
+                    <div id="imageUploadArea"
+                        class="w-full h-32 border-2 border-dashed border-[#E2CEB1] rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-[#cfad7d] hover:bg-[#FFF8E6] transition-all duration-300">
+                        <svg class="w-8 h-8 text-[#cfad7d] mb-2" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                        <p class="text-sm text-[#553827] text-center opacity-70">
+                            <span class="font-medium text-[#cfad7d]">Klik untuk upload</span><br>
+                            atau drag & drop foto di sini
+                        </p>
+                        <p class="text-xs text-[#553827] opacity-50 mt-1">PNG, JPG hingga 5MB</p>
                     </div>
-                </section>
+                    <div id="imagePreview" class="hidden mt-3">
+                        <img id="previewImg" src="" alt="Preview"
+                            class="w-full h-32 object-cover rounded-xl shadow-sm border border-[#E2CEB1]">
+                        <button type="button" id="removeImage"
+                            class="mt-2 text-sm text-red-600 hover:text-red-800 flex items-center space-x-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                </path>
+                            </svg>
+                            <span>Hapus foto</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-                <!-- Back to Top Button -->
-                <button id="backToTopBtn" class="fixed bottom-8 right-8 bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition-colors opacity-0 invisible">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            <!-- Harga -->
+            <div class="group">
+                <label for="price"
+                    class="block text-sm font-semibold text-[#553827] mb-2 group-focus-within:text-[#cfad7d] transition-colors">
+                    Harga (Rp)
+                </label>
+                <div class="relative">
+                    <input type="number" id="price" name="price" required min="0" step="1000"
+                        class="w-full px-4 py-3 border-2 border-[#E2CEB1] rounded-xl focus:border-[#cfad7d] focus:ring-4 focus:ring-[#FFF8E6] outline-none transition-all duration-300 text-[#553827] placeholder-gray-400 pl-12"
+                        placeholder="25000">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <span class="text-[#cfad7d] font-medium">Rp</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tanggal Tersedia -->
+            <div class="group">
+                <label for="availableDate"
+                    class="block text-sm font-semibold text-[#553827] mb-2 group-focus-within:text-[#cfad7d] transition-colors">
+                    Tanggal Tersedia
+                </label>
+                <div class="relative">
+                    <input type="date" id="availableDate" name="availableDate" required
+                        class="w-full px-4 py-3 border-2 border-[#E2CEB1] rounded-xl focus:border-[#cfad7d] focus:ring-4 focus:ring-[#FFF8E6] outline-none transition-all duration-300 text-[#553827]">
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <svg class="w-5 h-5 text-[#cfad7d]" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit"
+                class="w-full bg-gradient-to-r from-[#cfad7d] to-[#B8956A] text-white font-bold py-4 px-6 rounded-xl hover:from-[#B8956A] hover:to-[#A6875C] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[#FFF8E6]">
+                <span class="flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
-                </button>
+                    <span>Tambah Makanan</span>
+                </span>
+            </button>
+
+            <!-- Back to Dashboard Button -->
+            <div class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center cursor-pointer"
+                onclick="window.history.back()">
+
+                <span class="text-[#553827] font-medium">Back To Vendor Dashboard</span>
+            </div>
+        </form>
+
+        <!-- Success Message (Hidden) -->
+        <div id="successMessage"
+            class="hidden mt-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-xl">
+            <div class="flex items-center space-x-2">
+                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span class="font-medium">Data makanan berhasil ditambahkan!</span>
             </div>
         </div>
 
-        <script>
-            // Smooth scroll for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80, // Adjust for header height
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
+        <!-- Data Display -->
+        <div id="dataDisplay" class="hidden mt-8 p-6 bg-[#FFF8E6] rounded-xl border-2 border-[#E2CEB1]">
+            <h3 class="font-bold text-[#553827] mb-4 flex items-center space-x-2">
+                <svg class="w-5 h-5 text-[#cfad7d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                    </path>
+                </svg>
+                <span>Data Makanan</span>
+            </h3>
+            <div id="displayContent" class="space-y-3 text-sm text-[#553827]"></div>
+        </div>
+    </div>
 
-            // Back to top button
-            const backToTopBtn = document.getElementById('backToTopBtn');
-            
-            window.addEventListener('scroll', () => {
-                if (window.pageYOffset > 300) {
-                    backToTopBtn.classList.remove('opacity-0', 'invisible');
-                    backToTopBtn.classList.add('opacity-100', 'visible');
-                } else {
-                    backToTopBtn.classList.add('opacity-0', 'invisible');
-                    backToTopBtn.classList.remove('opacity-100', 'visible');
-                }
-            });
-            
-            backToTopBtn.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
+    <script>
+        let uploadedImageData = null;
 
-            // Preview multiple images
-            function previewMultipleImages(input) {
-                const previewContainer = document.getElementById('previewImagesContainer');
-                const previewGallery = document.getElementById('imagePreviewGallery');
-                
-                // Clear previews
-                previewGallery.innerHTML = '';
-                
-                if (input.files && input.files.length > 0) {
-                    previewContainer.innerHTML = '';
-                    
-                    // Limit to 2 images
-                    const maxImages = Math.min(input.files.length, 2);
-                    
-                    for (let i = 0; i < maxImages; i++) {
-                        const reader = new FileReader();
-                        
-                        reader.onload = function(e) {
-                            const imgContainer = document.createElement('div');
-                            imgContainer.className = 'relative';
-                            
-                            const img = document.createElement('img');
-                            img.src = e.target.result;
-                            img.className = 'h-20 w-20 object-cover rounded-lg';
-                            
-                            imgContainer.appendChild(img);
-                            previewGallery.appendChild(imgContainer);
-                        }
-                        
-                        reader.readAsDataURL(input.files[i]);
-                    }
-                } else {
-                    previewContainer.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                    `;
-                }
+        // Set today's date as default
+        document.getElementById('availableDate').valueAsDate = new Date();
+
+        // Format currency
+        const priceInput = document.getElementById('price');
+        priceInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            e.target.value = value;
+        });
+
+        // Image upload functionality
+        const imageInput = document.getElementById('foodImage');
+        const imageUploadArea = document.getElementById('imageUploadArea');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImg = document.getElementById('previewImg');
+        const removeImageBtn = document.getElementById('removeImage');
+
+        // Click to upload
+        imageUploadArea.addEventListener('click', () => {
+            imageInput.click();
+        });
+
+        // Drag and drop functionality
+        imageUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            imageUploadArea.classList.add('border-[#cfad7d]', 'bg-[#FFF8E6]');
+        });
+
+        imageUploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            imageUploadArea.classList.remove('border-[#cfad7d]', 'bg-[#FFF8E6]');
+        });
+
+        imageUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            imageUploadArea.classList.remove('border-[#cfad7d]', 'bg-[#FFF8E6]');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleImageFile(files[0]);
             }
-            
-            // Search functionality
-            const searchInput = document.getElementById('searchFood');
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                const rows = document.querySelectorAll('tbody tr');
-                
-                rows.forEach(row => {
-                    const foodName = row.cells[1]?.textContent.toLowerCase() || '';
-                    const description = row.cells[2]?.textContent.toLowerCase() || '';
-                    
-                    if (foodName.includes(searchTerm) || description.includes(searchTerm)) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
+        });
+
+        // File input change
+        imageInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleImageFile(e.target.files[0]);
+            }
+        });
+
+        // Handle image file
+        function handleImageFile(file) {
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Mohon pilih file gambar yang valid (PNG, JPG, etc.)');
+                return;
+            }
+
+            // Validate file size (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Ukuran file terlalu besar. Maksimal 5MB.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                uploadedImageData = e.target.result;
+                previewImg.src = uploadedImageData;
+                imageUploadArea.classList.add('hidden');
+                imagePreview.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Remove image
+        removeImageBtn.addEventListener('click', () => {
+            uploadedImageData = null;
+            imageInput.value = '';
+            previewImg.src = '';
+            imageUploadArea.classList.remove('hidden');
+            imagePreview.classList.add('hidden');
+        });
+
+        // Handle form submission
+        document.getElementById('foodForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const data = {
+                foodName: formData.get('foodName'),
+                foodDescription: formData.get('foodDescription'),
+                price: parseInt(formData.get('price')),
+                availableDate: formData.get('availableDate')
+            };
+
+            // Format price to Indonesian Rupiah
+            const formattedPrice = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR'
+            }).format(data.price);
+
+            // Format date
+            const dateObj = new Date(data.availableDate);
+            const formattedDate = dateObj.toLocaleDateString('id-ID', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
             });
-        </script>
-    </body>
-</x-layout>
+
+            // Display success message
+            const successMsg = document.getElementById('successMessage');
+            successMsg.classList.remove('hidden');
+
+            // Display data
+            const dataDisplay = document.getElementById('dataDisplay');
+            const displayContent = document.getElementById('displayContent');
+
+            displayContent.innerHTML = `
+                <div class="flex justify-between items-center py-2 border-b border-[#E2CEB1]">
+                    <span class="font-medium text-[#553827] opacity-70">Nama:</span>
+                    <span class="font-semibold text-[#553827]">${data.foodName}</span>
+                </div>
+                <div class="py-2 border-b border-[#E2CEB1]">
+                    <span class="font-medium text-[#553827] opacity-70 block mb-1">Deskripsi:</span>
+                    <p class="text-[#553827] text-sm leading-relaxed">${data.foodDescription}</p>
+                </div>
+                <div class="flex justify-between items-center py-2 border-b border-[#E2CEB1]">
+                    <span class="font-medium text-[#553827] opacity-70">Harga:</span>
+                    <span class="font-semibold text-green-600">${formattedPrice}</span>
+                </div>
+                <div class="flex justify-between items-center py-2 ${uploadedImageData ? 'border-b border-[#E2CEB1]' : ''}">
+                    <span class="font-medium text-[#553827] opacity-70">Tersedia:</span>
+                    <span class="font-semibold text-[#cfad7d]">${formattedDate}</span>
+                </div>
+                ${uploadedImageData ? `
+                    <div class="py-2">
+                        <span class="font-medium text-[#553827] opacity-70 block mb-2">Foto:</span>
+                        <img src="${uploadedImageData}" alt="Foto ${data.foodName}" class="w-full h-40 object-cover rounded-lg shadow-sm border border-[#E2CEB1]">
+                    </div>
+                    ` : ''}
+            `;
+
+            dataDisplay.classList.remove('hidden');
+
+            // Hide success message after 3 seconds
+            setTimeout(() => {
+                successMsg.classList.add('hidden');
+            }, 3000);
+
+            // Reset form and image
+            e.target.reset();
+            uploadedImageData = null;
+            imageUploadArea.classList.remove('hidden');
+            imagePreview.classList.add('hidden');
+            document.getElementById('availableDate').valueAsDate = new Date();
+        });
+    </script>
+</body>
+
+</html>

@@ -60,7 +60,7 @@
             <div class="mt-8">
                 <h2 class="text-xl font-bold text-[#553827] mb-4">Quick Actions</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 ">
-                    <a href="{{ route('vendor.orders.index') }}"
+                    <a href="{{ route('vendorAddProduct') }}"
                         class="bg-white p-4 rounded-lg shadow border border-[#E2CEB1] hover:bg-[#FFF8E6] transition text-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto text-[#cfad7d] mb-2"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -230,6 +230,33 @@
                                         added any products yet.</td>
                                 </tr>
                             @endforelse
+
+                            <!-- Data Nasi Goreng yang ditambahkan -->
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <img src="{{ asset('image/nasigoreng.jpeg') }}" alt="Nasi Goreng"
+                                        class="w-20 h-20 object-cover rounded" />
+                                </td>
+
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    Nasi Goreng
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-600">
+                                    Nasi Goreng Paling enak di sby
+                                </td>
+                                <td class="px-6 py-4 text-sm font-bold text-[#553827]">
+                                    Rp. 45.000
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                                    <a href="#" class="text-[#cfad7d] hover:underline">Edit</a>
+                                    <form action="#" method="POST" class="inline"
+                                        onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

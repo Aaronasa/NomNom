@@ -18,11 +18,7 @@
             @endif
 
             <!-- Debug information (remove in production) -->
-            @if(config('app.debug'))
-                <div class="bg-blue-100 text-blue-700 px-4 py-2 rounded mb-4">
-                    <strong>Debug Info:</strong> Found {{ $orderDetails->count() }} order details
-                </div>
-            @endif
+
 
             @forelse ($orderDetails as $item)
                 @php
